@@ -1,16 +1,22 @@
-import { InputGroup, Button } from "@chakra-ui/react"
+import { InputGroup, Button } from "@chakra-ui/react";
+import { TButton } from "../utils/types";
 
-export const HomePageButton = () => {
+export const CustomButton = ({ buttonName, bgColor }: TButton) => {
     return (
         <InputGroup>
             <Button
                 width="100%"
-                colorScheme="teal"
+                color={bgColor}
                 variant="outline"
-                _hover={{ bg: "teal.800", color: "white", borderColor: 'teal.800' }}
+                borderColor={bgColor}
+                _hover={{
+                    bg: bgColor,
+                    color: "white",
+                    borderColor: bgColor,
+                }}
             >
-                Sign in
+                {buttonName}
             </Button>
         </InputGroup>
-    )
-}
+    );
+};

@@ -1,17 +1,24 @@
 import { Button, Icon, InputGroup } from "@chakra-ui/react"
 import { FcGoogle } from "react-icons/fc"
+import { ButtonName } from "../utils/enums"
+import { TButton } from "../utils/types"
 
-export const GoogleSSOBtn = () => {
+export const GoogleSSOBtn = ({ bgColor }: TButton) => {
     return (
         <InputGroup>
             <Button
                 leftIcon={<Icon as={FcGoogle} />}
-                colorScheme="teal"
+                width='100%'
+                color={bgColor}
                 variant="outline"
-                width="100%"
-                _hover={{ bg: "teal.800", color: "white", borderColor: 'teal.800' }}
+                borderColor={bgColor}
+                _hover={{
+                    bg: bgColor,
+                    color: "white",
+                    borderColor: bgColor,
+                }}
             >
-                Continue with Google
+                {ButtonName.GOOGLE_SSO_BUTTON}
             </Button>
         </InputGroup>
     )

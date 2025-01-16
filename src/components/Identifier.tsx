@@ -1,13 +1,13 @@
 import { Icon, Input, InputGroup, InputLeftElement } from "@chakra-ui/react"
-import { TfiUser } from "react-icons/tfi"
+import { TIconIdentifierProps } from "../utils/types"
 
-export const Identifier = () => {
+export const Identifier = ({ icon, placeHolder }: TIconIdentifierProps) => {
     return (
-        <InputGroup mt='10px' mb='10px'>
+        <InputGroup mb='10px'>
             <InputLeftElement pointerEvents='none'>
-                <Icon as={TfiUser} color='gray.300' />
+                <Icon as={icon} color='gray.300' />
             </InputLeftElement>
-            <Input type='text' placeholder='Email or Username' />
+            <Input type='text' placeholder={placeHolder} />
         </InputGroup>
     )
 }
