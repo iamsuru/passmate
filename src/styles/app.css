@@ -1,5 +1,13 @@
 body {
-  font-family: "Crimson Text";
-  font-weight: 400;
-  font-style: normal;
+  font-family: "Crimson Text" !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+body {
+  scrollbar-width: none;
 }

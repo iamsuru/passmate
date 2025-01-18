@@ -1,7 +1,7 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { LoginPage } from "./LoginPage"
 import { RegistrationPage } from "./RegistrationPage"
-import { TabName } from "../utils/enums"
+import { Color, TabName, Variant } from "../utils/enums"
 
 export const HomePage = () => {
     return (
@@ -15,16 +15,16 @@ export const HomePage = () => {
         >
             <Box
                 p={8}
-                bg="gray.800"
+                bg={Color.GRAY_800}
                 boxShadow="md"
                 borderRadius="md"
                 maxW="sm"
                 width="full"
             >
-                <Tabs isFitted colorScheme='green' variant='unstyled'>
+                <Tabs isFitted colorScheme={Color.GREEN} variant={Variant.UNSTYLED}>
                     <TabList mb='15px'>
-                        <Tab _selected={{ color: 'white', bg: 'teal.800' }}>{TabName.SIGN_IN}</Tab>
-                        <Tab _selected={{ color: 'white', bg: 'purple.700' }}>{TabName.SIGN_UP}</Tab>
+                        <Tab _selected={{ color: Color.WHITE, bg: Color.TEAL_800 }}>{TabName.SIGN_IN}</Tab>
+                        <Tab _selected={{ color: Color.WHITE, bg: Color.PURPLE_700 }}>{TabName.SIGN_UP}</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel>

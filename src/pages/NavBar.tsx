@@ -1,5 +1,6 @@
 import { Box, Heading } from "@chakra-ui/react"
 import "../styles/navbar.css"
+import { Color } from "../utils/enums"
 export const NavBar = () => {
     return (
         <>
@@ -10,7 +11,7 @@ export const NavBar = () => {
                 width="100%"
                 padding="5px 10px 5px 10px"
             >
-                <Heading color='teal.600' className="nav-name">PassMate</Heading>
+                <Heading color={Color.TEAL_600} className="nav-name">PassMate</Heading>
             </Box>
         </>
     )
