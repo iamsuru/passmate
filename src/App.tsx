@@ -1,3 +1,4 @@
+import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { HomeScreen } from './pages/HomeScreen';
 import { NavBar } from './pages/NavBar';
@@ -7,7 +8,10 @@ function App() {
   return (
     <>
       <NavBar />
-      <HomeScreen />
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/passmate' element={<HomeScreen />} />
+      </Routes>
     </>
   );
 }
