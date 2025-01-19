@@ -10,7 +10,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path='/' element={<HomePage />} />
-        <Route path='/passmate' element={<HomeScreen />} />
+        <Route path='/passmate/home-screen' element={<HomeScreen />} />
       </Routes>
     </>
   );
