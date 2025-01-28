@@ -20,7 +20,8 @@ export enum Variant {
     SOLID = 'solid',
     OUTLINE = 'outline',
     TRANSPARENT = 'transparent',
-    UNSTYLED = 'unstyled'
+    UNSTYLED = 'unstyled',
+    SUBTLE = 'subtle'
 }
 
 export enum ModalType {
@@ -38,4 +39,14 @@ export enum Color {
     WHITE = 'white',
     GREEN = 'green',
     RED_500 = 'red.500'
+}
+
+export enum ResponseMessage {
+    ACCOUNT_CREATED_SUCCESSFULLY = 'Account created successfully',
+    FAILED_TO_CREATE_USER_ACCOUNT = 'Failed to create user account',
+    USERNAME_NOT_AVAILABLE = 'Username not available',
+    INTERNAL_SERVER_ERROR = 'Internal server error',
+    INCORRECT_CREDENTIALS = 'Incorrect Credentials',
+    USER_DOES_NOT_EXISTS = 'User does not exists with these credentials',
+    AUTHENTICATION_SUCCESSFUL = 'Authentication successful'
 }

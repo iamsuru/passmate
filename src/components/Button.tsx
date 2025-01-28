@@ -1,24 +1,24 @@
-import { InputGroup, Button } from "@chakra-ui/react";
+import { InputGroup, Button, Spinner } from "@chakra-ui/react";
 import { TButton } from "../utils/types";
-import { Color, Variant } from "../utils/enums";
+import { Color } from "../utils/enums";
 
-export const CustomButton = ({ buttonName, bgColor, variant }: TButton) => {
+export const CustomButton = ({ buttonName, bgColor, variant, onClick, isLoading }: TButton) => {
     return (
         <InputGroup>
             <Button
                 width="100%"
-                color={variant === Variant.OUTLINE ? bgColor : Color.WHITE}
-                bg={variant === Variant.OUTLINE ? Variant.TRANSPARENT : bgColor}
+                color={Color.WHITE}
+                bg={bgColor}
                 variant={variant}
-                borderColor={bgColor}
+                onClick={onClick}
                 _hover={{
                     bg: bgColor,
                     color: Color.WHITE,
                     borderColor: bgColor,
                 }}
             >
-                {buttonName}
+                {isLoading ? <Spinner /> : buttonName}
             </Button>
-        </InputGroup>
+        </InputGroup >
     );
 };

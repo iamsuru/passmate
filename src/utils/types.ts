@@ -3,7 +3,9 @@ import { Static, Type } from "@sinclair/typebox";
 const Button = Type.Object({
     buttonName: Type.String(),
     bgColor: Type.String(),
-    variant: Type.String()
+    variant: Type.String(),
+    isLoading: Type.Optional(Type.Boolean()),
+    onClick: Type.Optional(Type.Function([Type.Object({})], Type.Void()))
 })
 
 export type TButton = Static<typeof Button>
@@ -11,9 +13,16 @@ export type TButton = Static<typeof Button>
 const IconIdentifierSchema = Type.Object({
     icon: Type.Any(),
     placeHolder: Type.String(),
+    onChange: Type.Function([Type.Object({ target: Type.Object({ value: Type.String() }) })], Type.Void())
 });
 
 export type TIconIdentifierProps = Static<typeof IconIdentifierSchema>;
+
+const PasswordField = Type.Object({
+    onChange: Type.Optional(Type.Function([Type.Object({ target: Type.Object({ value: Type.String() }) })], Type.Void()))
+});
+
+export type TPasswordField = Static<typeof PasswordField>;
 
 const CredentialsCard = Type.Object({
     title: Type.String(),
@@ -34,3 +43,50 @@ const CustomModalProps = Type.Object({
 })
 
 export type TCustomModalProps = Static<typeof CustomModalProps>
+
+const UserDetails = Type.Object({
+    uid: Type.Optional(Type.String()),
+    email: Type.String(),
+    username: Type.Optional(Type.String()),
+    password: Type.String(),
+})
+
+export type TUserDetails = Static<typeof UserDetails>
+
+const updateUserDetailsResponse = Type.Object({
+    code: Type.Number(),
+    message: Type.Optional(Type.String())
+})
+
+export type TUpdateUserDetailsResponse = Static<typeof updateUserDetailsResponse>
+
+const createdUser = Type.Object({
+    code: Type.Number(),
+    message: Type.String()
+})
+
+export type TCreatedUser = Static<typeof createdUser>
+
+
+const usernameTaken = Type.Object({
+    isUsernameTaken: Type.Optional(Type.Boolean()),
+    code: Type.Number(),
+    message: Type.Optional(Type.String())
+})
+export type TUsernameTaken = Static<typeof usernameTaken>
+
+const getUser = Type.Object({
+    code: Type.Number(),
+    message: Type.Optional(Type.String()),
+    password: Type.Optional(Type.String())
+})
+
+export type TGetUser = Static<typeof getUser>
+
+const authenticateUser = Type.Object({
+    code: Type.Number(),
+    message: Type.String(),
+    data: Type.Optional(Type.Object({}))
+})
+
+export type TAuthenticateUser = Static<typeof authenticateUser>
