@@ -3,7 +3,7 @@ import { FcGoogle } from "react-icons/fc"
 import { ButtonName, Color, Variant } from "../utils/enums"
 import { TButton } from "../utils/types"
 
-export const GoogleSSOBtn = ({ bgColor }: TButton) => {
+export const GoogleSSOBtn = ({ bgColor, onClick }: TButton) => {
     return (
         <InputGroup>
             <Button
@@ -12,6 +12,7 @@ export const GoogleSSOBtn = ({ bgColor }: TButton) => {
                 color={bgColor}
                 variant={Variant.OUTLINE}
                 borderColor={bgColor}
+                onClick={onClick}
                 _hover={{
                     bg: bgColor,
                     color: Color.WHITE,

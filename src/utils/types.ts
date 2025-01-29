@@ -90,3 +90,11 @@ const authenticateUser = Type.Object({
 })
 
 export type TAuthenticateUser = Static<typeof authenticateUser>
+
+const validations = Type.Object({
+    status: Type.Boolean(),
+    type: Type.Optional(Type.String()),
+    message: Type.Optional(Type.String())
+})
+
+export type TValidations = Static<typeof validations>

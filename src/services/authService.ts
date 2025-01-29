@@ -1,13 +1,25 @@
-import { createUserWithEmailAndPassword, deleteUser, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, deleteUser, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth'
 import { TAuthenticateUser, TCreatedUser, TUpdateUserDetailsResponse, TUserDetails } from '../utils/types'
 import { auth } from '../firebase/config'
 import { getUser, isUsernameTaken, updateUserData } from './databaseService'
 import { ResponseMessage } from '../utils/enums'
 import { createHashedPassword } from '../utils/bcrypt'
+import { validateEmail, validatePassword, validateUsername } from '../utils/validations'
 
 export const registerUser = async (userDetails: TUserDetails): Promise<TCreatedUser> => {
     try {
-        const { email, password } = userDetails
+        const { email, username, password } = userDetails
+
+        const isEmailValidated = validateEmail(email)
+        const isUsernameValidated = validateUsername(username!)
+        const isPasswordValidated = validatePassword(password, false)
+
+        if (!isEmailValidated.status || !isUsernameValidated.status || !isPasswordValidated.status) {
+            return {
+                code: 400,
+                message: isEmailValidated?.message! || isUsernameValidated.message! || isPasswordValidated?.message!
+            }
+        }
 
         const hashedPassword: string = await createHashedPassword(password)
 
@@ -51,6 +63,16 @@ export const registerUser = async (userDetails: TUserDetails): Promise<TCreatedU
 
 export const authenticateUser = async (userDetails: TUserDetails): Promise<TAuthenticateUser> => {
     try {
+        const isEmailValidated = validateEmail(userDetails?.email)
+        const isPasswordValidated = validatePassword(userDetails?.password, true)
+
+        if (!isEmailValidated.status || !isPasswordValidated.status) {
+            return {
+                code: 400,
+                message: isEmailValidated?.message! || isPasswordValidated?.message!
+            }
+        }
+
         const user = await getUser(userDetails);
         if (user.code === 200) {
             const authUser = await signInWithEmailAndPassword(auth, userDetails.email, user.password!)
@@ -71,3 +93,36 @@ export const authenticateUser = async (userDetails: TUserDetails): Promise<TAuth
         }
     }
 }
+
+export const authenticateUserWithSSO = async () => {
+    const googleSSOAuthProvider = new GoogleAuthProvider()
+    signInWithRedirect(auth, googleSSOAuthProvider)
+}
+
+export const handleSSOAuthentication = async () => {
+    return new Promise((resolve) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                resolve({
+                    code: 200,
+                    message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
+                    data: user,
+                });
+            } else {
+                const result = await getRedirectResult(auth);
+                if (result) {
+                    resolve({
+                        code: 200,
+                        message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
+                        data: result.user,
+                    });
+                } else {
+                    resolve({
+                        code: 400,
+                        message: ResponseMessage.INCORRECT_CREDENTIALS,
+                    });
+                }
+            }
+        });
+    });
+};

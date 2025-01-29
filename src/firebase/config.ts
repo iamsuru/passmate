@@ -12,6 +12,9 @@ const firebaseConfig = {
     appId: process.env.REACT_APP_FIREBASE_APP_ID
 }
 
-export const firebaseApp = initializeApp(firebaseConfig)
-export const auth = getAuth(firebaseApp)
-export const db = getDatabase(firebaseApp)
+const firebaseApp = initializeApp(firebaseConfig)
+const auth = getAuth(firebaseApp)
+auth.useDeviceLanguage();
+const db = getDatabase(firebaseApp)
+
+export { auth, db }

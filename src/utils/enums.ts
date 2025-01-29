@@ -48,5 +48,13 @@ export enum ResponseMessage {
     INTERNAL_SERVER_ERROR = 'Internal server error',
     INCORRECT_CREDENTIALS = 'Incorrect Credentials',
     USER_DOES_NOT_EXISTS = 'User does not exists with these credentials',
-    AUTHENTICATION_SUCCESSFUL = 'Authentication successful'
+    AUTHENTICATION_SUCCESSFUL = 'Authentication successful',
+    EMAIL_IS_NOT_PROVIDED = 'Email id is not provided',
+    USERNAME_IS_NOT_PROVIDED = 'Username is not provided',
+    PASSWORD_IS_NOT_PROVIDED = 'Password is not provided',
+    PASSWORD_LENGTH_VALIDATION_FAILED = 'Password must be 8-20 characters long',
+    PASSWORD_IS_NOT_STRONG = 'Password is not strong. Please create a strong password',
+    SOME_INPUT_FIELDS_ARE_NOT_PROVIDED = 'Some input fields are not provided',
+    INVALID_EMAIL_IS_NOT_PROVIDED = 'Invalid email id provided',
+
 }
