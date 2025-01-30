@@ -16,7 +16,8 @@ export const registerUser = async (userDetails: TUserDetails): Promise<TCreatedU
 
         if (!isEmailValidated.status || !isUsernameValidated.status || !isPasswordValidated.status) {
             return {
-                code: 400,
+                code: 406,
+                type: isEmailValidated?.type! || isUsernameValidated.type! || isPasswordValidated?.type!,
                 message: isEmailValidated?.message! || isUsernameValidated.message! || isPasswordValidated?.message!
             }
         }
@@ -68,7 +69,8 @@ export const authenticateUser = async (userDetails: TUserDetails): Promise<TAuth
 
         if (!isEmailValidated.status || !isPasswordValidated.status) {
             return {
-                code: 400,
+                code: 406,
+                type: isEmailValidated?.type || isPasswordValidated?.type,
                 message: isEmailValidated?.message! || isPasswordValidated?.message!
             }
         }

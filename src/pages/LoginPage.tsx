@@ -3,7 +3,7 @@ import { GoogleSSOBtn } from "../components/GoogleSSOBtn";
 import { CustomButton } from "../components/Button";
 import { Password } from "../components/Password";
 import { Identifier } from "../components/Identifier";
-import { ButtonName, Color, PlaceHolder, Variant } from "../utils/enums";
+import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums";
 import { useEffect, useState } from "react";
 import { TUserDetails } from "../utils/types";
 import { authenticateUser, authenticateUserWithSSO, handleSSOAuthentication } from "../services/authService";
@@ -17,6 +17,7 @@ export const LoginPage = () => {
     const [isSSOLoginAttempted, setIsSSOLoginAttempted] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState<{ [key: string]: boolean }>({})
 
     useEffect(() => {
         if (isSSOLoginAttempted) {
@@ -49,7 +50,6 @@ export const LoginPage = () => {
         const userDetails: TUserDetails = { email, password };
 
         const response = await authenticateUser(userDetails);
-        setIsLoading(false);
 
         if (response.code === 200) {
             toast({
@@ -63,6 +63,12 @@ export const LoginPage = () => {
                 navigate('/passmate/home-screen');
             }, 4000);
         } else {
+            const newErrors: { [key: string]: boolean } = {};
+            if (response?.code === 406) {
+                newErrors[`${response?.type}Login`] = true
+            }
+            setErrors(newErrors)
+
             toast({
                 description: response.message,
                 status: "error",
@@ -71,18 +77,18 @@ export const LoginPage = () => {
                 position: 'bottom'
             });
         }
+        setIsLoading(false);
     };
 
     const handleSSOLogin = async () => {
-        setIsSSOLoginAttempted(true);
         authenticateUserWithSSO();
     };
 
     return (
         <FormControl>
             <Stack>
-                <Identifier icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} />
-                <Password onChange={(e) => setPassword(e.target.value)} />
+                <Identifier id={IdentiferIds.EMAILLOGIN} icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} isError={errors['emailLogin']} />
+                <Password id={IdentiferIds.PASSWORDLOGIN} onChange={(e) => setPassword(e.target.value)} isError={errors['passwordLogin']} />
                 <CustomButton buttonName={ButtonName.LOGIN_BUTTON} bgColor={Color.TEAL_800} variant={Variant.SOLID} onClick={handleLogin} isLoading={isLoading} />
                 <Box display="flex" alignItems="center" my='6px'>
                     <Box flex="1" borderBottom="1px solid gray" />

@@ -4,7 +4,7 @@ import { Identifier } from "../components/Identifier"
 import { Password } from "../components/Password"
 import { CustomButton } from "../components/Button"
 import { Separater } from "../components/Separater"
-import { ButtonName, Color, PlaceHolder, Variant } from "../utils/enums"
+import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums"
 import { MdAlternateEmail, MdEmail } from 'react-icons/md'
 import { useState } from "react"
 import { registerUser } from "../services/authService"
@@ -17,6 +17,8 @@ export const RegistrationPage = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
+    const [errors, setErrors] = useState<{ [key: string]: boolean }>({})
+
     const handleUserCreation = async () => {
         setIsLoading(true)
         const userDetails: TUserDetails = {
@@ -25,7 +27,6 @@ export const RegistrationPage = () => {
             password
         }
         const response: TCreatedUser = await registerUser(userDetails)
-        setIsLoading(false)
         if (response.code === 201) {
             toast({
                 description: response.message,
@@ -35,6 +36,11 @@ export const RegistrationPage = () => {
                 position: 'bottom'
             })
         } else {
+            const newErrors: { [key: string]: boolean } = {};
+            if (response?.code === 406) {
+                newErrors[`${response?.type}Login`] = true
+            }
+            setErrors(newErrors)
             toast({
                 description: response.message,
                 status: "error",
@@ -43,13 +49,14 @@ export const RegistrationPage = () => {
                 position: 'bottom'
             });
         }
+        setIsLoading(false)
     }
     return (
         <FormControl>
             <Stack>
-                <Identifier icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} />
-                <Identifier icon={MdAlternateEmail} placeHolder={PlaceHolder.USERNAME} onChange={(e) => setUsername(e.target.value)} />
-                <Password onChange={(e) => setPassword(e.target.value)} />
+                <Identifier id={IdentiferIds.EMAILREGISTRATION} icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} isError={errors['emailRegistration']} />
+                <Identifier id={IdentiferIds.USERNAMEREGISTRATION} icon={MdAlternateEmail} placeHolder={PlaceHolder.USERNAME} onChange={(e) => setUsername(e.target.value)} isError={errors['usernameRegistration']} />
+                <Password id={IdentiferIds.PASSWORDREGISTRATION} onChange={(e) => setPassword(e.target.value)} isError={errors['passwordRegistration']} />
                 <CustomButton buttonName={ButtonName.SIGN_UP_BUTTON} bgColor={Color.PURPLE_700} variant={Variant.SOLID} onClick={handleUserCreation} isLoading={isLoading} />
                 <Separater />
                 <GoogleSSOBtn buttonName={ButtonName.GOOGLE_SSO_BUTTON} bgColor={Color.PURPLE_700} variant={Variant.OUTLINE} onClick={handleUserCreation} isLoading={isLoading} />

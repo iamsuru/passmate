@@ -38,7 +38,8 @@ export enum Color {
     GRAY_800 = 'gray.800',
     WHITE = 'white',
     GREEN = 'green',
-    RED_500 = 'red.500'
+    RED_500 = 'red.500',
+    RED = 'red',
 }
 
 export enum ResponseMessage {
@@ -57,4 +58,18 @@ export enum ResponseMessage {
     SOME_INPUT_FIELDS_ARE_NOT_PROVIDED = 'Some input fields are not provided',
     INVALID_EMAIL_IS_NOT_PROVIDED = 'Invalid email id provided',
 
+}
+
+export enum ValidateInputType {
+    EMAIL = 'email',
+    USERNAME = 'username',
+    PASSWORD = 'password',
+}
+
+export enum IdentiferIds {
+    EMAILLOGIN = 'emailLogin',
+    PASSWORDLOGIN = 'passwordLogin',
+    EMAILREGISTRATION = 'emailRegistration',
+    USERNAMEREGISTRATION = 'usernameRegistration',
+    PASSWORDREGISTRATION = 'passwordRegistration',
 }

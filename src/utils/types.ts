@@ -11,14 +11,18 @@ const Button = Type.Object({
 export type TButton = Static<typeof Button>
 
 const IconIdentifierSchema = Type.Object({
+    id: Type.String(),
     icon: Type.Any(),
     placeHolder: Type.String(),
+    isError: Type.Boolean(),
     onChange: Type.Function([Type.Object({ target: Type.Object({ value: Type.String() }) })], Type.Void())
 });
 
 export type TIconIdentifierProps = Static<typeof IconIdentifierSchema>;
 
 const PasswordField = Type.Object({
+    id: Type.String(),
+    isError: Type.Boolean(),
     onChange: Type.Optional(Type.Function([Type.Object({ target: Type.Object({ value: Type.String() }) })], Type.Void()))
 });
 
@@ -62,6 +66,7 @@ export type TUpdateUserDetailsResponse = Static<typeof updateUserDetailsResponse
 
 const createdUser = Type.Object({
     code: Type.Number(),
+    type: Type.Optional(Type.String()),
     message: Type.String()
 })
 
@@ -85,6 +90,7 @@ export type TGetUser = Static<typeof getUser>
 
 const authenticateUser = Type.Object({
     code: Type.Number(),
+    type: Type.Optional(Type.String()),
     message: Type.String(),
     data: Type.Optional(Type.Object({}))
 })

@@ -17,7 +17,7 @@ const CustomModal = ({ isOpen, onClose, title, username, password, modalType }: 
                         modalType === ModalType.VERIFICATION ?
                             <>
                                 <Text mb={'4'}>{title} : {username}</Text>
-                                <Password />
+                                <Password id={""} isError={false} />
                                 <Box as="div" mb={'5'}></Box>
                                 <CustomButton buttonName={ButtonName.VERIFY_BUTTON} variant={Variant.SOLID} bgColor={Color.PURPLE_700} />
                             </>

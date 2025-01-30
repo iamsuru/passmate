@@ -1,12 +1,13 @@
-import { ResponseMessage } from "./enums";
+import { ResponseMessage, ValidateInputType } from "./enums";
 import { TValidations } from "./types";
 import validator from "validator";
 
 export const validateEmail = (email: string): TValidations => {
-    if (!email || email.trim().length === 0) {
+    email = email.trim()
+    if (!email || email.length === 0) {
         return {
             status: false,
-            type: 'email',
+            type: ValidateInputType.EMAIL,
             message: ResponseMessage.EMAIL_IS_NOT_PROVIDED
         }
     }
@@ -14,7 +15,7 @@ export const validateEmail = (email: string): TValidations => {
     if (!validator.isEmail(email)) {
         return {
             status: false,
-            type: 'email',
+            type: ValidateInputType.EMAIL,
             message: ResponseMessage.INVALID_EMAIL_IS_NOT_PROVIDED
         }
     }
@@ -23,10 +24,11 @@ export const validateEmail = (email: string): TValidations => {
 }
 
 export const validateUsername = (username: string): TValidations => {
-    if (!username || username.trim().length === 0) {
+    username = username.trim()
+    if (!username || username.length === 0) {
         return {
             status: false,
-            type: 'username',
+            type: ValidateInputType.USERNAME,
             message: ResponseMessage.USERNAME_IS_NOT_PROVIDED
         }
     }
@@ -34,10 +36,11 @@ export const validateUsername = (username: string): TValidations => {
 }
 
 export const validatePassword = (password: string, isLogin?: boolean): TValidations => {
-    if (!password || password.trim().length === 0) {
+    password = password.trim()
+    if (!password || password.length === 0) {
         return {
             status: false,
-            type: 'password',
+            type: ValidateInputType.PASSWORD,
             message: ResponseMessage.PASSWORD_IS_NOT_PROVIDED
         }
     }
@@ -45,7 +48,7 @@ export const validatePassword = (password: string, isLogin?: boolean): TValidati
     if (!isLogin && !validator.isLength(password, { min: 8, max: 20 })) {
         return {
             status: false,
-            type: 'password',
+            type: ValidateInputType.PASSWORD,
             message: ResponseMessage.PASSWORD_LENGTH_VALIDATION_FAILED
         }
     }
@@ -60,7 +63,7 @@ export const validatePassword = (password: string, isLogin?: boolean): TValidati
     if (!isLogin && !isStringPassword) {
         return {
             status: false,
-            type: 'password',
+            type: ValidateInputType.PASSWORD,
             message: ResponseMessage.PASSWORD_IS_NOT_STRONG
         }
     }
