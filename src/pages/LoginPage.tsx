@@ -1,4 +1,4 @@
-import { Box, FormControl, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, FormControl, Stack, useToast } from "@chakra-ui/react";
 import { CustomButton } from "../components/Button";
 import { Password } from "../components/Password";
 import { Identifier } from "../components/Identifier";
@@ -6,7 +6,7 @@ import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/
 import { useState } from "react";
 import { TUserDetails } from "../utils/types";
 import { authenticateUser } from "../services/authService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 
 export const LoginPage = () => {
@@ -32,7 +32,7 @@ export const LoginPage = () => {
                 position: 'bottom'
             });
             setTimeout(() => {
-                navigate('/passmate/home-screen');
+                navigate('/home-screen');
             }, 4000);
         } else {
             const newErrors: { [key: string]: boolean } = {};
@@ -58,12 +58,10 @@ export const LoginPage = () => {
                 <Identifier id={IdentiferIds.EMAILLOGIN} icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} isError={errors['emailLogin']} />
                 <Password id={IdentiferIds.PASSWORDLOGIN} onChange={(e) => setPassword(e.target.value)} isError={errors['passwordLogin']} />
                 <CustomButton buttonName={ButtonName.LOGIN_BUTTON} bgColor={Color.TEAL_800} variant={Variant.SOLID} onClick={handleLogin} isLoading={isLoading} />
-                <Box display="flex" alignItems="center" my='6px'>
-                    <Box flex="1" borderBottom="1px solid gray" />
-                    <Text mx={4}>OR</Text>
-                    <Box flex="1" borderBottom="1px solid gray" />
-                </Box>
                 {/* <GoogleSSOBtn buttonName={ButtonName.GOOGLE_SSO_BUTTON} bgColor={Color.TEAL_800} variant={Variant.OUTLINE} onClick={handleSSOLogin} isLoading={isLoading} /> */}
+                <Box textAlign='right' color={Color.GRAY_300}>
+                    <Link to='/forgot-password'>Forgot Password?</Link>
+                </Box>
             </Stack>
         </FormControl>
     );

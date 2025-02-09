@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, deleteUser, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth'
 import { TAuthenticateUser, TCreatedUser, TUpdateUserDetailsResponse, TUserDetails } from '../utils/types'
 import { auth } from '../firebase/config'
 import { getUser, isUsernameTaken, updateUserData } from './databaseService'
@@ -88,6 +88,32 @@ export const authenticateUser = async (userDetails: TUserDetails): Promise<TAuth
             code: user.code,
             message: user.message!
         }
+    } catch (error: any) {
+        return {
+            code: 500,
+            message: error.message || ResponseMessage.INTERNAL_SERVER_ERROR
+        }
+    }
+}
+
+export const forgotPasswordLink = async (email: string) => {
+    try {
+        const isEmailValidated = validateEmail(email)
+        if (!isEmailValidated.status) {
+            return {
+                code: 406,
+                type: isEmailValidated?.type,
+                message: isEmailValidated?.message!
+            }
+        }
+        const response = await sendPasswordResetEmail(auth, email)
+        console.log(response)
+
+        return {
+            code: 200,
+            message: ResponseMessage.PASSWORD_RESET_LINK_SENT_SUCCESSFULLY
+        }
+
     } catch (error: any) {
         return {
             code: 500,

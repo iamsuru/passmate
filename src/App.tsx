@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage';
 import { HomeScreen } from './pages/HomeScreen';
 import { NavBar } from './pages/NavBar';
 import "./styles/app.css"
+import { ForgotPasswordPage } from './pages/ForgotPassword';
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <NavBar />
       <Routes>
         <Route path='/' element={<HomePage />} />
-        <Route path='/passmate/home-screen' element={<HomeScreen />} />
+        <Route path='/home-screen' element={<HomeScreen />} />
+        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
       </Routes>
     </>
   );

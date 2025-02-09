@@ -2,7 +2,8 @@ export enum ButtonName {
     LOGIN_BUTTON = 'Login',
     SIGN_UP_BUTTON = 'Sign up',
     GOOGLE_SSO_BUTTON = 'Continue with Google',
-    VERIFY_BUTTON = 'Verify'
+    VERIFY_BUTTON = 'Verify',
+    PASSWORD_RESET_LINK = 'Send Reset Password Link'
 }
 
 export enum PlaceHolder {
@@ -57,7 +58,7 @@ export enum ResponseMessage {
     PASSWORD_IS_NOT_STRONG = 'Password is not strong. Please create a strong password',
     SOME_INPUT_FIELDS_ARE_NOT_PROVIDED = 'Some input fields are not provided',
     INVALID_EMAIL_IS_NOT_PROVIDED = 'Invalid email id provided',
-
+    PASSWORD_RESET_LINK_SENT_SUCCESSFULLY = 'Password reset link sent successfully'
 }
 
 export enum ValidateInputType {
@@ -72,4 +73,5 @@ export enum IdentiferIds {
     EMAILREGISTRATION = 'emailRegistration',
     USERNAMEREGISTRATION = 'usernameRegistration',
     PASSWORDREGISTRATION = 'passwordRegistration',
+    EMAILFORGOTPASSWORD = 'emailForgotPassword'
 }
