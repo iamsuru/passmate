@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, deleteUser, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth'
+import { createUserWithEmailAndPassword, deleteUser, signInWithEmailAndPassword } from 'firebase/auth'
 import { TAuthenticateUser, TCreatedUser, TUpdateUserDetailsResponse, TUserDetails } from '../utils/types'
 import { auth } from '../firebase/config'
 import { getUser, isUsernameTaken, updateUserData } from './databaseService'
@@ -95,36 +95,3 @@ export const authenticateUser = async (userDetails: TUserDetails): Promise<TAuth
         }
     }
 }
-
-export const authenticateUserWithSSO = async () => {
-    const googleSSOAuthProvider = new GoogleAuthProvider()
-    signInWithRedirect(auth, googleSSOAuthProvider)
-}
-
-export const handleSSOAuthentication = async () => {
-    return new Promise((resolve) => {
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                resolve({
-                    code: 200,
-                    message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
-                    data: user,
-                });
-            } else {
-                const result = await getRedirectResult(auth);
-                if (result) {
-                    resolve({
-                        code: 200,
-                        message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
-                        data: result.user,
-                    });
-                } else {
-                    resolve({
-                        code: 400,
-                        message: ResponseMessage.INCORRECT_CREDENTIALS,
-                    });
-                }
-            }
-        });
-    });
-};

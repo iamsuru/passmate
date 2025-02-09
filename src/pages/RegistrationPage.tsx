@@ -1,5 +1,4 @@
 import { FormControl, Stack, useToast } from "@chakra-ui/react"
-import { GoogleSSOBtn } from "../components/GoogleSSOBtn"
 import { Identifier } from "../components/Identifier"
 import { Password } from "../components/Password"
 import { CustomButton } from "../components/Button"
@@ -59,7 +58,7 @@ export const RegistrationPage = () => {
                 <Password id={IdentiferIds.PASSWORDREGISTRATION} onChange={(e) => setPassword(e.target.value)} isError={errors['passwordRegistration']} />
                 <CustomButton buttonName={ButtonName.SIGN_UP_BUTTON} bgColor={Color.PURPLE_700} variant={Variant.SOLID} onClick={handleUserCreation} isLoading={isLoading} />
                 <Separater />
-                <GoogleSSOBtn buttonName={ButtonName.GOOGLE_SSO_BUTTON} bgColor={Color.PURPLE_700} variant={Variant.OUTLINE} onClick={handleUserCreation} isLoading={isLoading} />
+                {/* <GoogleSSOBtn buttonName={ButtonName.GOOGLE_SSO_BUTTON} bgColor={Color.PURPLE_700} variant={Variant.OUTLINE} onClick={handleUserCreation} isLoading={isLoading} /> */}
             </Stack>
         </FormControl>
     )
