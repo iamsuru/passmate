@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, deleteUser, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, deleteUser, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, User } from 'firebase/auth'
 import { TAuthenticateUser, TCreatedUser, TUpdateUserDetailsResponse, TUserDetails } from '../utils/types'
 import { auth } from '../firebase/config'
 import { getUser, isUsernameTaken, updateUserData } from './databaseService'
@@ -22,16 +22,15 @@ export const registerUser = async (userDetails: TUserDetails): Promise<TCreatedU
             }
         }
 
-        const hashedPassword: string = await createHashedPassword(password)
-
         const usernameTaken = await isUsernameTaken(userDetails?.username!)
-
         if (usernameTaken.isUsernameTaken === true) {
             return {
                 code: 400,
                 message: ResponseMessage.USERNAME_NOT_AVAILABLE
             }
         }
+
+        const hashedPassword: string = await createHashedPassword(password)
 
         const newUser = await createUserWithEmailAndPassword(auth, email, hashedPassword)
         const { uid } = newUser.user
@@ -42,9 +41,12 @@ export const registerUser = async (userDetails: TUserDetails): Promise<TCreatedU
         const result: TUpdateUserDetailsResponse = await updateUserData(userDetails);
 
         if (result.code === 201) {
-            return {
-                code: result.code,
-                message: ResponseMessage.ACCOUNT_CREATED_SUCCESSFULLY
+            const isVerificationEmailSent = await emailVerificationLink(newUser.user)
+            if (isVerificationEmailSent) {
+                return {
+                    code: result.code,
+                    message: ResponseMessage.EMAIL_VERIFICATION_SENT_SUCCESSFULLY
+                }
             }
         }
 
@@ -54,6 +56,18 @@ export const registerUser = async (userDetails: TUserDetails): Promise<TCreatedU
             message: ResponseMessage.FAILED_TO_CREATE_USER_ACCOUNT
         }
 
+    } catch (error: any) {
+        return {
+            code: 500,
+            message: error.message || ResponseMessage.INTERNAL_SERVER_ERROR
+        }
+    }
+}
+
+const emailVerificationLink = async (user: User) => {
+    try {
+        await sendEmailVerification(user)
+        return true
     } catch (error: any) {
         return {
             code: 500,
@@ -78,10 +92,18 @@ export const authenticateUser = async (userDetails: TUserDetails): Promise<TAuth
         const user = await getUser(userDetails);
         if (user.code === 200) {
             const authUser = await signInWithEmailAndPassword(auth, userDetails.email, user.password!)
-            return {
-                code: 200,
-                message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
-                data: authUser.user
+            if (!authUser.user.emailVerified) {
+                emailVerificationLink(authUser.user)
+                return {
+                    code: 400,
+                    message: ResponseMessage.EMAIL_ADDRESS_IS_NOT_VERIFIED
+                }
+            } else {
+                return {
+                    code: 200,
+                    message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
+                    data: authUser.user
+                }
             }
         }
         return {

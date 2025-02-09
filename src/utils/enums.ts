@@ -44,7 +44,7 @@ export enum Color {
 }
 
 export enum ResponseMessage {
-    ACCOUNT_CREATED_SUCCESSFULLY = 'Account created successfully',
+    EMAIL_VERIFICATION_SENT_SUCCESSFULLY = 'Email verification link sent',
     FAILED_TO_CREATE_USER_ACCOUNT = 'Failed to create user account',
     USERNAME_NOT_AVAILABLE = 'Username not available',
     INTERNAL_SERVER_ERROR = 'Internal server error',
@@ -58,7 +58,8 @@ export enum ResponseMessage {
     PASSWORD_IS_NOT_STRONG = 'Password is not strong. Please create a strong password',
     SOME_INPUT_FIELDS_ARE_NOT_PROVIDED = 'Some input fields are not provided',
     INVALID_EMAIL_IS_NOT_PROVIDED = 'Invalid email id provided',
-    PASSWORD_RESET_LINK_SENT_SUCCESSFULLY = 'Password reset link sent successfully'
+    PASSWORD_RESET_LINK_SENT_SUCCESSFULLY = 'Password reset link sent successfully',
+    EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified'
 }
 
 export enum ValidateInputType {
