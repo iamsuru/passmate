@@ -67,7 +67,7 @@ export const getUser = async (userDetails: TUserDetails): Promise<TGetUser> => {
                     const isPasswordMatched = await comparePassword(password, users[username].password)
 
                     return isPasswordMatched ?
-                        { code: 200, password: users[username].password }
+                        { code: 200, data: users[username] }
                         : { code: 401, message: ResponseMessage.INCORRECT_CREDENTIALS }
                 }
             }

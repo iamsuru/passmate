@@ -91,7 +91,7 @@ export const authenticateUser = async (userDetails: TUserDetails): Promise<TAuth
 
         const user = await getUser(userDetails);
         if (user.code === 200) {
-            const authUser = await signInWithEmailAndPassword(auth, userDetails.email, user.password!)
+            const authUser = await signInWithEmailAndPassword(auth, userDetails.email, user.data?.password!)
             if (!authUser.user.emailVerified) {
                 emailVerificationLink(authUser.user)
                 return {
@@ -102,7 +102,11 @@ export const authenticateUser = async (userDetails: TUserDetails): Promise<TAuth
                 return {
                     code: 200,
                     message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
-                    data: authUser.user
+                    data: {
+                        email: user.data?.email,
+                        username: user.data?.username,
+                        token: await authUser.user.getIdToken()
+                    }
                 }
             }
         }
@@ -142,4 +146,8 @@ export const forgotPasswordLink = async (email: string) => {
             message: error.message || ResponseMessage.INTERNAL_SERVER_ERROR
         }
     }
+}
+
+export const signOut = async () => {
+    auth.signOut();
 }

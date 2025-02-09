@@ -83,7 +83,7 @@ export type TUsernameTaken = Static<typeof usernameTaken>
 const getUser = Type.Object({
     code: Type.Number(),
     message: Type.Optional(Type.String()),
-    password: Type.Optional(Type.String())
+    data: Type.Optional(UserDetails)
 })
 
 export type TGetUser = Static<typeof getUser>
@@ -92,7 +92,7 @@ const authenticateUser = Type.Object({
     code: Type.Number(),
     type: Type.Optional(Type.String()),
     message: Type.String(),
-    data: Type.Optional(Type.Object({}))
+    data: Type.Optional(Type.Any())
 })
 
 export type TAuthenticateUser = Static<typeof authenticateUser>

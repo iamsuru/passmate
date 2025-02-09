@@ -31,6 +31,9 @@ export const LoginPage = () => {
                 isClosable: true,
                 position: 'bottom'
             });
+
+            localStorage.setItem(process.env.REACT_APP_LS_USERDATA_KEY!, JSON.stringify(response.data));
+
             setTimeout(() => {
                 navigate('/home-screen');
             }, 4000);

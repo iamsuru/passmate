@@ -59,7 +59,8 @@ export enum ResponseMessage {
     SOME_INPUT_FIELDS_ARE_NOT_PROVIDED = 'Some input fields are not provided',
     INVALID_EMAIL_IS_NOT_PROVIDED = 'Invalid email id provided',
     PASSWORD_RESET_LINK_SENT_SUCCESSFULLY = 'Password reset link sent successfully',
-    EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified'
+    EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified',
+    SESSION_HAS_EXPIRED = 'Your session has expired. Please log in again to continue'
 }
 
 export enum ValidateInputType {
