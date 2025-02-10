@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
         }
 
         const currentUser = localStorage.getItem(process.env.REACT_APP_LS_USERDATA_KEY);
-        const parsedUser = currentUser ? JSON.parse(currentUser) : null;
+        const parsedUser = currentUser ? JSON.parse(currentUser) : {};
 
         const { token, ...restUserDetails } = parsedUser
         setToken(token)
