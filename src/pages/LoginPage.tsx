@@ -8,6 +8,9 @@ import { TUserDetails } from "../utils/types";
 import { authenticateUser } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
+import { Cookie } from "../cookies/cookie";
+
+const cookie = new Cookie();
 
 export const LoginPage = () => {
     const toast = useToast();
@@ -32,7 +35,7 @@ export const LoginPage = () => {
                 position: 'bottom'
             });
 
-            localStorage.setItem(process.env.REACT_APP_LS_USERDATA_KEY!, JSON.stringify(response.data));
+            cookie.setCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!, response.data)
 
             setTimeout(() => {
                 navigate('/home-screen');

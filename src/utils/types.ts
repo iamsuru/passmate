@@ -104,3 +104,10 @@ const validations = Type.Object({
 })
 
 export type TValidations = Static<typeof validations>
+
+const signOut = Type.Object({
+    code: Type.Number(),
+    message: Type.Optional(Type.String())
+})
+
+export type TSignout = Static<typeof signOut>

@@ -1,10 +1,13 @@
 import { createUserWithEmailAndPassword, deleteUser, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, User } from 'firebase/auth'
-import { TAuthenticateUser, TCreatedUser, TUpdateUserDetailsResponse, TUserDetails } from '../utils/types'
+import { TAuthenticateUser, TCreatedUser, TSignout, TUpdateUserDetailsResponse, TUserDetails } from '../utils/types'
 import { auth } from '../firebase/config'
 import { getUser, isUsernameTaken, updateUserData } from './databaseService'
-import { ResponseMessage } from '../utils/enums'
+import { ErrorMessages, ResponseMessage } from '../utils/enums'
 import { createHashedPassword } from '../utils/bcrypt'
 import { validateEmail, validatePassword, validateUsername } from '../utils/validations'
+import { Cookie } from "../cookies/cookie";
+
+const cookie = new Cookie();
 
 export const registerUser = async (userDetails: TUserDetails): Promise<TCreatedUser> => {
     try {
@@ -132,8 +135,8 @@ export const forgotPasswordLink = async (email: string) => {
                 message: isEmailValidated?.message!
             }
         }
-        const response = await sendPasswordResetEmail(auth, email)
-        console.log(response)
+
+        await sendPasswordResetEmail(auth, email)
 
         return {
             code: 200,
@@ -148,6 +151,15 @@ export const forgotPasswordLink = async (email: string) => {
     }
 }
 
-export const signOut = async () => {
-    auth.signOut();
-}
+export const signOut = async (key: string): Promise<TSignout> => {
+    try {
+        await auth.signOut();
+        cookie.clearCookie(key);
+        return { code: 200 };
+    } catch (error: any) {
+        return {
+            code: 500,
+            message: error.message ?? ErrorMessages.ERROR_OCCURRED_WHILE_SIGN_OUT,
+        };
+    }
+};

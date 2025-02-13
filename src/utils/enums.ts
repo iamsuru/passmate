@@ -63,6 +63,10 @@ export enum ResponseMessage {
     SESSION_HAS_EXPIRED = 'Your session has expired. Please log in again to continue'
 }
 
+export enum ErrorMessages {
+    ERROR_OCCURRED_WHILE_SIGN_OUT = "Error occurred while signing out"
+}
+
 export enum ValidateInputType {
     EMAIL = 'email',
     USERNAME = 'username',
