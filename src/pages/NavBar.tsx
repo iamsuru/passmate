@@ -4,10 +4,19 @@ import { Color } from "../utils/enums";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { signOut } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { Cookie } from "../cookies/cookie"
+import { useEffect, useState } from "react";
+
+const cookie = new Cookie()
 
 export const NavBar = () => {
     const navigate = useNavigate()
     const toast = useToast()
+    const [userData, setUserData] = useState(null)
+
+    useEffect(() => {
+        setUserData(cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!))
+    }, [navigate])
 
     const handleSignOut = async () => {
         const response = await signOut(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)
@@ -35,16 +44,19 @@ export const NavBar = () => {
                 PassMate
             </Heading>
 
-            <Menu>
-                <MenuButton as={Button} variant="ghost">
-                    <BsThreeDotsVertical />
-                </MenuButton>
-                <MenuList>
-                    <MenuItem>Search password</MenuItem>
-                    <MenuItem>Add password</MenuItem>
-                    <MenuItem onClick={handleSignOut}>Logout</MenuItem>
-                </MenuList>
-            </Menu>
+            {
+                userData &&
+                <Menu>
+                    <MenuButton as={Button} variant="ghost">
+                        <BsThreeDotsVertical />
+                    </MenuButton>
+                    <MenuList>
+                        <MenuItem>Search password</MenuItem>
+                        <MenuItem>Add password</MenuItem>
+                        <MenuItem onClick={handleSignOut}>Logout</MenuItem>
+                    </MenuList>
+                </Menu>
+            }
         </Box>
     );
 };
