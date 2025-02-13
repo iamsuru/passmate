@@ -3,13 +3,17 @@ export enum ButtonName {
     SIGN_UP_BUTTON = 'Sign up',
     GOOGLE_SSO_BUTTON = 'Continue with Google',
     VERIFY_BUTTON = 'Verify',
-    PASSWORD_RESET_LINK = 'Send Reset Password Link'
+    PASSWORD_RESET_LINK = 'Send Reset Password Link',
+    SAVE_PASSWORD = 'Save Password',
 }
 
 export enum PlaceHolder {
     EMAIL = 'Email',
     USERNAME = 'Username',
-    EMAIL_OR_USERNAME = 'Email or Username'
+    EMAIL_OR_USERNAME = 'Email or Username',
+    APP_NAME = 'App name',
+    APP_USERNAME = 'App username or userId',
+    APP_PASSWORD = 'App password',
 }
 
 export enum TabName {
@@ -79,5 +83,8 @@ export enum IdentiferIds {
     EMAILREGISTRATION = 'emailRegistration',
     USERNAMEREGISTRATION = 'usernameRegistration',
     PASSWORDREGISTRATION = 'passwordRegistration',
-    EMAILFORGOTPASSWORD = 'emailForgotPassword'
+    EMAILFORGOTPASSWORD = 'emailForgotPassword',
+    APPNAME='appname',
+    APPUSERNAME = 'appusername',
+    APPPASSWORD = 'apppassword',
 }

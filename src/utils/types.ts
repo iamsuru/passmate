@@ -12,7 +12,7 @@ export type TButton = Static<typeof Button>
 
 const IconIdentifierSchema = Type.Object({
     id: Type.String(),
-    icon: Type.Any(),
+    icon: Type.Optional(Type.Any()),
     placeHolder: Type.String(),
     isError: Type.Boolean(),
     onChange: Type.Function([Type.Object({ target: Type.Object({ value: Type.String() }) })], Type.Void())
@@ -47,6 +47,13 @@ const CustomModalProps = Type.Object({
 })
 
 export type TCustomModalProps = Static<typeof CustomModalProps>
+
+const StoreModalProps = Type.Object({
+    isOpen: Type.Boolean(),
+    onClose: Type.Function([], Type.Void()),
+})
+
+export type TStoreModalProps = Static<typeof StoreModalProps>
 
 const UserDetails = Type.Object({
     uid: Type.Optional(Type.String()),
@@ -111,3 +118,11 @@ const signOut = Type.Object({
 })
 
 export type TSignout = Static<typeof signOut>
+
+const PasswordData = Type.Object({
+    appName: Type.String(),
+    appUsername: Type.String(),
+    appPassword: Type.String(),
+})
+
+export type TPasswordData = Static<typeof PasswordData>
