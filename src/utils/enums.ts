@@ -11,9 +11,9 @@ export enum PlaceHolder {
     EMAIL = 'Email',
     USERNAME = 'Username',
     EMAIL_OR_USERNAME = 'Email or Username',
-    APP_NAME = 'App name',
-    APP_USERNAME = 'App username or userId',
-    APP_PASSWORD = 'App password',
+    PLATFORM_NAME = 'Platform name',
+    ACCOUNT_USERNAME = 'Account username',
+    ACCOUNT_PASSWORD = 'Account password',
 }
 
 export enum TabName {
@@ -49,32 +49,40 @@ export enum Color {
 
 export enum ResponseMessage {
     EMAIL_VERIFICATION_SENT_SUCCESSFULLY = 'Email verification link sent',
-    FAILED_TO_CREATE_USER_ACCOUNT = 'Failed to create user account',
-    USERNAME_NOT_AVAILABLE = 'Username not available',
-    INTERNAL_SERVER_ERROR = 'Internal server error',
     INCORRECT_CREDENTIALS = 'Incorrect Credentials',
+    USERNAME_NOT_AVAILABLE = 'Username not available',
     USER_DOES_NOT_EXISTS = 'User does not exists with these credentials',
     AUTHENTICATION_SUCCESSFUL = 'Authentication successful',
-    EMAIL_IS_NOT_PROVIDED = 'Email id is not provided',
-    USERNAME_IS_NOT_PROVIDED = 'Username is not provided',
-    PASSWORD_IS_NOT_PROVIDED = 'Password is not provided',
-    PASSWORD_LENGTH_VALIDATION_FAILED = 'Password must be 8-20 characters long',
-    PASSWORD_IS_NOT_STRONG = 'Password is not strong. Please create a strong password',
     SOME_INPUT_FIELDS_ARE_NOT_PROVIDED = 'Some input fields are not provided',
-    INVALID_EMAIL_IS_NOT_PROVIDED = 'Invalid email id provided',
     PASSWORD_RESET_LINK_SENT_SUCCESSFULLY = 'Password reset link sent successfully',
-    EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified',
-    SESSION_HAS_EXPIRED = 'Your session has expired. Please log in again to continue'
+    SESSION_HAS_EXPIRED = 'Your session has expired. Please log in again to continue',
+    PASSWORD_STORED_SUCCESSFULLY = 'Password stored successfully in vault',
 }
 
-export enum ErrorMessages {
-    ERROR_OCCURRED_WHILE_SIGN_OUT = "Error occurred while signing out"
+export enum ErrorMessage {
+    FAILED_TO_CREATE_USER_ACCOUNT = 'Failed to create user account',
+    EMAIL_ID_NOT_PROVIDED = 'Email id is not provided',
+    USERNAME_IS_NOT_PROVIDED = 'Username is not provided',
+    PASSWORD_IS_NOT_PROVIDED = 'Password is not provided',
+    INTERNAL_SERVER_ERROR = 'Internal server error',
+    FAILED_TO_STORE_PASSWORD = 'Failed to stored password in vault',
+    ACCOUNT_USERNAME_NOT_PROVIDED = 'Account username not provided',
+    ACCOUNT_PASSWORD_NOT_PROVIDED = 'Account password not provided',
+    ERROR_OCCURRED_WHILE_SIGN_OUT = "Error occurred while signing out",
+    PASSWORD_LENGTH_VALIDATION_FAILED = 'Password must be 8-20 characters long',
+    PASSWORD_IS_NOT_STRONG = 'Password is not strong. Please create a strong password',
+    INVALID_EMAIL_ID_NOT_PROVIDED = 'Invalid email id provided',
+    EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified',
+    PLATFORM_NAME_NOT_PROVIDED = 'Platform name is not provided',
 }
 
 export enum ValidateInputType {
     EMAIL = 'email',
     USERNAME = 'username',
     PASSWORD = 'password',
+    PLATFORM_NAME = 'platform_name',
+    ACCOUNT_USERNAME = 'account_username',
+    ACCOUNT_PASSWORD = 'account_password',
 }
 
 export enum IdentiferIds {
@@ -84,7 +92,7 @@ export enum IdentiferIds {
     USERNAMEREGISTRATION = 'usernameRegistration',
     PASSWORDREGISTRATION = 'passwordRegistration',
     EMAILFORGOTPASSWORD = 'emailForgotPassword',
-    APPNAME='appname',
-    APPUSERNAME = 'appusername',
-    APPPASSWORD = 'apppassword',
+    PLATFORM_NAME = 'platform_name',
+    ACCOUNT_USERNAME = 'account_username',
+    ACCOUNT_PASSWORD = 'account_password',
 }

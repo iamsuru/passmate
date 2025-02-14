@@ -1,4 +1,4 @@
-import { ResponseMessage, ValidateInputType } from "./enums";
+import { ErrorMessage, ValidateInputType } from "./enums";
 import { TValidations } from "./types";
 import validator from "validator";
 
@@ -8,7 +8,7 @@ export const validateEmail = (email: string): TValidations => {
         return {
             status: false,
             type: ValidateInputType.EMAIL,
-            message: ResponseMessage.EMAIL_IS_NOT_PROVIDED
+            message: ErrorMessage.EMAIL_ID_NOT_PROVIDED
         }
     }
 
@@ -16,7 +16,7 @@ export const validateEmail = (email: string): TValidations => {
         return {
             status: false,
             type: ValidateInputType.EMAIL,
-            message: ResponseMessage.INVALID_EMAIL_IS_NOT_PROVIDED
+            message: ErrorMessage.INVALID_EMAIL_ID_NOT_PROVIDED
         }
     }
 
@@ -29,7 +29,7 @@ export const validateUsername = (username: string): TValidations => {
         return {
             status: false,
             type: ValidateInputType.USERNAME,
-            message: ResponseMessage.USERNAME_IS_NOT_PROVIDED
+            message: ErrorMessage.USERNAME_IS_NOT_PROVIDED
         }
     }
     return { status: true };
@@ -41,7 +41,7 @@ export const validatePassword = (password: string, isLogin?: boolean): TValidati
         return {
             status: false,
             type: ValidateInputType.PASSWORD,
-            message: ResponseMessage.PASSWORD_IS_NOT_PROVIDED
+            message: ErrorMessage.PASSWORD_IS_NOT_PROVIDED
         }
     }
 
@@ -49,7 +49,7 @@ export const validatePassword = (password: string, isLogin?: boolean): TValidati
         return {
             status: false,
             type: ValidateInputType.PASSWORD,
-            message: ResponseMessage.PASSWORD_LENGTH_VALIDATION_FAILED
+            message: ErrorMessage.PASSWORD_LENGTH_VALIDATION_FAILED
         }
     }
 
@@ -64,9 +64,45 @@ export const validatePassword = (password: string, isLogin?: boolean): TValidati
         return {
             status: false,
             type: ValidateInputType.PASSWORD,
-            message: ResponseMessage.PASSWORD_IS_NOT_STRONG
+            message: ErrorMessage.PASSWORD_IS_NOT_STRONG
         }
     }
 
+    return { status: true };
+}
+
+export const validatePlatformName = (platformName: string): TValidations => {
+    platformName = platformName.trim()
+    if (!platformName || platformName.length === 0) {
+        return {
+            status: false,
+            type: ValidateInputType.PLATFORM_NAME,
+            message: ErrorMessage.PLATFORM_NAME_NOT_PROVIDED
+        }
+    }
+    return { status: true };
+}
+
+export const validateAccountUsername = (accountUsername: string): TValidations => {
+    accountUsername = accountUsername.trim()
+    if (!accountUsername || accountUsername.length === 0) {
+        return {
+            status: false,
+            type: ValidateInputType.ACCOUNT_USERNAME,
+            message: ErrorMessage.ACCOUNT_USERNAME_NOT_PROVIDED
+        }
+    }
+    return { status: true };
+}
+
+export const validateAccountPassword = (accountPassword: string): TValidations => {
+    accountPassword = accountPassword.trim()
+    if (!accountPassword || accountPassword.length === 0) {
+        return {
+            status: false,
+            type: ValidateInputType.ACCOUNT_PASSWORD,
+            message: ErrorMessage.ACCOUNT_PASSWORD_NOT_PROVIDED
+        }
+    }
     return { status: true };
 }

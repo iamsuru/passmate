@@ -2,15 +2,15 @@ import { Box, Button, Heading, Menu, MenuButton, MenuList, MenuItem, useToast, u
 import "../styles/navbar.css";
 import { Color } from "../utils/enums";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { signOut } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { Cookie } from "../cookies/cookie"
 import { useEffect, useState } from "react";
 import StorePasswordModal from "../components/StorePasswordModal";
-
-const cookie = new Cookie()
+import { AuthService } from "../services/authService";
 
 export const NavBar = () => {
+    const cookie = new Cookie()
+    const authService = new AuthService()
     const navigate = useNavigate()
     const toast = useToast()
     const [userData, setUserData] = useState(null)
@@ -29,10 +29,11 @@ export const NavBar = () => {
 
     useEffect(() => {
         setUserData(cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!))
-    }, [])
+        // eslint-disable-next-line
+    }, [navigate])
 
     const handleSignOut = async () => {
-        const response = await signOut(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)
+        const response = await authService.signOut(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)
         if (response.code === 200) {
             navigate('/')
         } else {

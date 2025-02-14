@@ -64,13 +64,6 @@ const UserDetails = Type.Object({
 
 export type TUserDetails = Static<typeof UserDetails>
 
-const updateUserDetailsResponse = Type.Object({
-    code: Type.Number(),
-    message: Type.Optional(Type.String())
-})
-
-export type TUpdateUserDetailsResponse = Static<typeof updateUserDetailsResponse>
-
 const createdUser = Type.Object({
     code: Type.Number(),
     type: Type.Optional(Type.String()),
@@ -78,22 +71,6 @@ const createdUser = Type.Object({
 })
 
 export type TCreatedUser = Static<typeof createdUser>
-
-
-const usernameTaken = Type.Object({
-    isUsernameTaken: Type.Optional(Type.Boolean()),
-    code: Type.Number(),
-    message: Type.Optional(Type.String())
-})
-export type TUsernameTaken = Static<typeof usernameTaken>
-
-const getUser = Type.Object({
-    code: Type.Number(),
-    message: Type.Optional(Type.String()),
-    data: Type.Optional(UserDetails)
-})
-
-export type TGetUser = Static<typeof getUser>
 
 const authenticateUser = Type.Object({
     code: Type.Number(),
@@ -119,10 +96,47 @@ const signOut = Type.Object({
 
 export type TSignout = Static<typeof signOut>
 
-const PasswordData = Type.Object({
-    appName: Type.String(),
-    appUsername: Type.String(),
-    appPassword: Type.String(),
+const PasswordCredentials = Type.Object({
+    uid: Type.String(),
+    platformName: Type.String(),
+    accountUsername: Type.String(),
+    accountPassword: Type.String(),
 })
 
-export type TPasswordData = Static<typeof PasswordData>
+export type TPasswordCredentials = Static<typeof PasswordCredentials>
+
+// Password Service
+const StorePasswordResponse = Type.Object({
+    code: Type.Number(),
+    type: Type.Optional(Type.String()),
+    message: Type.String()
+})
+export type TStorePasswordResponse = Static<typeof StorePasswordResponse>
+
+// Database service
+const UpdateUserDataResponse = Type.Object({
+    code: Type.Number(),
+    message: Type.Optional(Type.String())
+})
+export type TUpdateUserDataResponse = Static<typeof UpdateUserDataResponse>
+
+const usernameTaken = Type.Object({
+    isUsernameTaken: Type.Optional(Type.Boolean()),
+    code: Type.Number(),
+    message: Type.Optional(Type.String())
+})
+export type TUsernameTaken = Static<typeof usernameTaken>
+
+const getUser = Type.Object({
+    code: Type.Number(),
+    message: Type.Optional(Type.String()),
+    data: Type.Optional(UserDetails)
+})
+export type TGetUser = Static<typeof getUser>
+
+
+const SavePlatformCredentials = Type.Object({
+    code: Type.Number(),
+    message: Type.Optional(Type.String()),
+})
+export type TSavePlatformCredentials = Static<typeof SavePlatformCredentials>

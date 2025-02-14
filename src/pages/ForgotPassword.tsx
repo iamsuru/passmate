@@ -5,9 +5,11 @@ import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
-import { forgotPasswordLink } from "../services/authService";
+import { AuthService } from "../services/authService";
 
 export const ForgotPasswordPage = () => {
+    const authService = new AuthService()
+
     const toast = useToast();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +18,7 @@ export const ForgotPasswordPage = () => {
 
     const sendResetPasswordLink = async () => {
         setIsLoading(true)
-        const response = await forgotPasswordLink(email)
+        const response = await authService.forgotPasswordLink(email)
         if (response.code === 200) {
             toast({
                 description: response.message,

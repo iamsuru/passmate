@@ -5,14 +5,14 @@ import { Identifier } from "../components/Identifier";
 import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums";
 import { useState } from "react";
 import { TUserDetails } from "../utils/types";
-import { authenticateUser } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import { Cookie } from "../cookies/cookie";
-
-const cookie = new Cookie();
+import { AuthService } from "../services/authService";
 
 export const LoginPage = () => {
+    const authService = new AuthService()
+    const cookie = new Cookie();
     const toast = useToast();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ export const LoginPage = () => {
         setIsLoading(true);
         const userDetails: TUserDetails = { email, password };
 
-        const response = await authenticateUser(userDetails);
+        const response = await authService.authenticateUser(userDetails);
 
         if (response.code === 200) {
             toast({
