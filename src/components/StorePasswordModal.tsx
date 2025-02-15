@@ -6,6 +6,7 @@ import { Identifier } from "./Identifier";
 import { useState } from "react";
 import { PasswordService } from "../services/passwordService";
 import { Cookie } from "../cookies/cookie";
+import { eventBus } from "../utils/eventBus";
 
 const passwordService = new PasswordService()
 const cookie = new Cookie()
@@ -33,6 +34,7 @@ const StorePasswordModal = ({ isOpen, onClose }: TStoreModalProps) => {
                 isClosable: true,
                 position: 'bottom'
             });
+            eventBus.emit("refresh")
             //closing the modal
             onClose();
         } else {

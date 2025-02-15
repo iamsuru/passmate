@@ -29,9 +29,9 @@ const PasswordField = Type.Object({
 export type TPasswordField = Static<typeof PasswordField>;
 
 const CredentialsCard = Type.Object({
-    title: Type.String(),
-    username: Type.String(),
-    password: Type.String(),
+    platformName: Type.String(),
+    accountUsername: Type.String(),
+    accountPassword: Type.String(),
 })
 
 export type TCredentialsCard = Static<typeof CredentialsCard>;
@@ -113,6 +113,22 @@ const StorePasswordResponse = Type.Object({
 })
 export type TStorePasswordResponse = Static<typeof StorePasswordResponse>
 
+const CredentialSchema = Type.Object({
+    accountPassword: Type.String(),
+    accountUsername: Type.String(),
+    createdAt: Type.String(),
+    platformName: Type.String(),
+    updatedAt: Type.String(),
+});
+export type TCredentialSchema = Static<typeof CredentialSchema>
+
+const FetchPassword = Type.Object({
+    code: Type.Number(),
+    data: Type.Optional(Type.Record(Type.String(), CredentialSchema)),
+    message: Type.Optional(Type.String())
+});
+export type TFetchPasswordResponse = Static<typeof FetchPassword>;
+
 // Database service
 const UpdateUserDataResponse = Type.Object({
     code: Type.Number(),
@@ -134,9 +150,19 @@ const getUser = Type.Object({
 })
 export type TGetUser = Static<typeof getUser>
 
-
 const SavePlatformCredentials = Type.Object({
     code: Type.Number(),
     message: Type.Optional(Type.String()),
 })
 export type TSavePlatformCredentials = Static<typeof SavePlatformCredentials>
+
+const FetchPlatformCredentials = Type.Object({
+    platformName: Type.String(),
+    accountUsername: Type.String(),
+    accountPassword: Type.String(),
+})
+const FetchPlatformCredentialsResponse = Type.Object({
+    code: Type.String(),
+    data: Type.Array(Type.Optional(FetchPlatformCredentials))
+})
+export type TFetchPlatformCredentialsResponse = Static<typeof FetchPlatformCredentialsResponse>

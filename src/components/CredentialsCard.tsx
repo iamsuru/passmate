@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { TCredentialsCard } from "../utils/types";
 
-export const CredentialsCard = ({ title, username, password }: TCredentialsCard) => {
+export const CredentialsCard = ({ platformName, accountUsername, accountPassword }: TCredentialsCard) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [show, setShow] = useState(false)
     const handleClick = () => {
@@ -29,10 +29,10 @@ export const CredentialsCard = ({ title, username, password }: TCredentialsCard)
                 borderColor="gray"
             >
                 <Flex justify="space-between" align="center">
-                    <Text fontWeight="bold">{title}</Text>
+                    <Text fontWeight="bold">{platformName}</Text>
                     <Flex align="center">
                         <Text fontWeight="bold" color={Color.GRAY_600}>
-                            {username}
+                            {accountUsername}
                         </Text>
                         {!show ? (
                             <ViewOffIcon _hover={{ cursor: 'pointer' }} ms={'3'} onClick={handleClick} />
@@ -46,9 +46,9 @@ export const CredentialsCard = ({ title, username, password }: TCredentialsCard)
             <CustomModal
                 isOpen={isOpen}
                 onClose={handleModalClose}
-                title={title}
-                username={username}
-                password={password}
+                title={platformName}
+                username={accountUsername}
+                password={accountPassword}
                 modalType={ModalType.VERIFICATION}
             />
         </>
