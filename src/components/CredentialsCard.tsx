@@ -1,19 +1,22 @@
-import { Box, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure } from "@chakra-ui/react";
 import CustomModal from "./CustomModal";
 import { Color, ModalType } from "../utils/enums";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { TCredentialsCard } from "../utils/types";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 export const CredentialsCard = ({ platformName, accountUsername, accountPassword }: TCredentialsCard) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [show, setShow] = useState(false)
+    const [modalTypeValue, setModalTypeValue] = useState(ModalType.VERIFICATION)
     const handleClick = () => {
         setShow(!show)
         onOpen()
     }
 
     const handleModalClose = () => {
+        setModalTypeValue(ModalType.VERIFICATION)
         setShow(false);
         onClose();
     };
@@ -39,6 +42,16 @@ export const CredentialsCard = ({ platformName, accountUsername, accountPassword
                         ) : (
                             <ViewIcon _hover={{ cursor: 'pointer' }} ms={'3'} onClick={handleClick} />
                         )}
+                        <Menu>
+                            <MenuButton ml='2'>
+                                <BsThreeDotsVertical />
+                            </MenuButton>
+                            <MenuList>
+                                <MenuItem>Update username</MenuItem>
+                                <MenuItem>Update password</MenuItem>
+                                <MenuItem>Delete credentials</MenuItem>
+                            </MenuList>
+                        </Menu>
                     </Flex>
                 </Flex>
             </Box>
@@ -49,7 +62,7 @@ export const CredentialsCard = ({ platformName, accountUsername, accountPassword
                 title={platformName}
                 username={accountUsername}
                 password={accountPassword}
-                modalType={ModalType.VERIFICATION}
+                modalType={modalTypeValue}
             />
         </>
     );

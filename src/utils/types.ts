@@ -23,7 +23,8 @@ export type TIconIdentifierProps = Static<typeof IconIdentifierSchema>;
 const PasswordField = Type.Object({
     id: Type.String(),
     isError: Type.Boolean(),
-    onChange: Type.Optional(Type.Function([Type.Object({ target: Type.Object({ value: Type.String() }) })], Type.Void()))
+    onChange: Type.Optional(Type.Function([Type.Object({ target: Type.Object({ value: Type.String() }) })], Type.Void())),
+    fieldText: Type.Optional(Type.String())
 });
 
 export type TPasswordField = Static<typeof PasswordField>;

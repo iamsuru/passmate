@@ -31,7 +31,7 @@ export class PasswordService {
                 uid,
                 platformName,
                 accountUsername,
-                accountPassword: encrypt(accountUsername)
+                accountPassword: encrypt(accountPassword)
             })
 
             if (result.code === 201) {

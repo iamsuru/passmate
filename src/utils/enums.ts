@@ -14,6 +14,7 @@ export enum PlaceHolder {
     PLATFORM_NAME = 'Platform name',
     ACCOUNT_USERNAME = 'Account username',
     ACCOUNT_PASSWORD = 'Account password',
+    PASSWORD_FIELD_TEXT = 'Passmate password',
 }
 
 export enum TabName {
@@ -26,7 +27,8 @@ export enum Variant {
     OUTLINE = 'outline',
     TRANSPARENT = 'transparent',
     UNSTYLED = 'unstyled',
-    SUBTLE = 'subtle'
+    SUBTLE = 'subtle',
+    GHOST = 'ghost'
 }
 
 export enum ModalType {
@@ -95,4 +97,5 @@ export enum IdentiferIds {
     PLATFORM_NAME = 'platform_name',
     ACCOUNT_USERNAME = 'account_username',
     ACCOUNT_PASSWORD = 'account_password',
+    VALIDATE_PASSWORD = 'validate_password'
 }

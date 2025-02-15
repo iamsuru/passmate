@@ -5,7 +5,7 @@ import { TbLockPassword } from "react-icons/tb"
 import { Color } from "../utils/enums"
 import { TPasswordField } from "../utils/types"
 
-export const Password = ({ id, onChange, isError }: TPasswordField) => {
+export const Password = ({ id, onChange, isError, fieldText }: TPasswordField) => {
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
     return (
@@ -17,7 +17,7 @@ export const Password = ({ id, onChange, isError }: TPasswordField) => {
                 pr='4.5rem'
                 id={id}
                 type={show ? 'text' : 'password'}
-                placeholder='Password'
+                placeholder={fieldText ?? "Password"}
                 onChange={onChange}
                 borderColor={isError ? Color.RED : Color.GRAY_300}
             />

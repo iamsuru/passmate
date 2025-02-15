@@ -2,7 +2,7 @@ import { get, push, ref, set } from 'firebase/database';
 import { TFetchPasswordResponse, TGetUser, TPasswordCredentials, TSavePlatformCredentials, TUpdateUserDataResponse, TUserDetails, TUsernameTaken } from '../utils/types';
 import { db } from '../firebase/config';
 import { comparePassword } from '../utils/bcrypt';
-import { ErrorMessage } from '../utils/enums';
+import { ErrorMessage, ResponseMessage } from '../utils/enums';
 import { currentDate } from '../utils/dateUtils';
 
 const path: string = process.env.REACT_APP_FIREBASE_USERS_UPLOAD_PATH!;
@@ -69,12 +69,12 @@ export class DatabaseService {
                         const isPasswordMatched = await comparePassword(password, users[username].password)
                         return isPasswordMatched ?
                             { code: 200, data: users[username] }
-                            : { code: 401 }
+                            : { code: 401, message: ResponseMessage.INCORRECT_CREDENTIALS }
                     }
                 }
             }
 
-            return { code: 400 };
+            return { code: 400, message: ResponseMessage.USER_DOES_NOT_EXISTS };
         } catch (error: any) {
             return {
                 code: 500,

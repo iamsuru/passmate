@@ -1,7 +1,7 @@
 import { Box, Button, Heading, Menu, MenuButton, MenuList, MenuItem, useToast, useDisclosure } from "@chakra-ui/react";
 import "../styles/navbar.css";
-import { Color } from "../utils/enums";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { Color, Variant } from "../utils/enums";
+import { TbMenu2 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { Cookie } from "../cookies/cookie"
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { AuthService } from "../services/authService";
 export const NavBar = () => {
     const cookie = new Cookie()
     const authService = new AuthService()
+
     const navigate = useNavigate()
     const toast = useToast()
     const [userData, setUserData] = useState(null)
@@ -62,8 +63,8 @@ export const NavBar = () => {
                 {
                     userData &&
                     <Menu>
-                        <MenuButton as={Button} variant="ghost">
-                            <BsThreeDotsVertical />
+                        <MenuButton as={Button} variant={Variant.GHOST} >
+                            <TbMenu2 />
                         </MenuButton>
                         <MenuList>
                             <MenuItem>Search password</MenuItem>
