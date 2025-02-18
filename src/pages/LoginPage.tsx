@@ -4,7 +4,7 @@ import { Password } from "../components/Password";
 import { Identifier } from "../components/Identifier";
 import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums";
 import { useState } from "react";
-import { TUserDetails } from "../utils/types";
+import { TAuthenticateUser, TUserDetails } from "../utils/types";
 import { Link, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import { Cookie } from "../cookies/cookie";
@@ -24,7 +24,7 @@ export const LoginPage = () => {
         setIsLoading(true);
         const userDetails: TUserDetails = { email, password };
 
-        const response = await authService.authenticateUser(userDetails);
+        const response: TAuthenticateUser = await authService.authenticateUser(userDetails);
 
         if (response.code === 200) {
             toast({

@@ -4,7 +4,7 @@ import { Password } from "../components/Password"
 import { CustomButton } from "../components/Button"
 import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums"
 import { MdAlternateEmail, MdEmail } from 'react-icons/md'
-import { TCreatedUser, TUserDetails } from "../utils/types"
+import { TResponse, TUserDetails } from "../utils/types"
 import { useNavigate } from "react-router-dom"
 import { AuthService } from "../services/authService"
 import { useState } from "react"
@@ -28,7 +28,7 @@ export const RegistrationPage = () => {
             username,
             password
         }
-        const response: TCreatedUser = await authService.registerUser(userDetails)
+        const response: TResponse = await authService.registerUser(userDetails)
         if (response.code === 201) {
             toast({
                 description: response.message,
@@ -43,7 +43,7 @@ export const RegistrationPage = () => {
         } else {
             const newErrors: { [key: string]: boolean } = {};
             if (response?.code === 406) {
-                newErrors[`${response?.type}Login`] = true
+                newErrors[`${response?.type}Registration`] = true
             }
             setErrors(newErrors)
             toast({

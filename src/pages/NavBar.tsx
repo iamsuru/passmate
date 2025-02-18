@@ -7,6 +7,7 @@ import { Cookie } from "../cookies/cookie"
 import { useEffect, useState } from "react";
 import StorePasswordModal from "../components/StorePasswordModal";
 import { AuthService } from "../services/authService";
+import { TResponse } from "../utils/types";
 
 export const NavBar = () => {
     const cookie = new Cookie()
@@ -34,7 +35,7 @@ export const NavBar = () => {
     }, [navigate])
 
     const handleSignOut = async () => {
-        const response = await authService.signOut(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)
+        const response: TResponse = await authService.signOut(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)
         if (response.code === 200) {
             navigate('/')
         } else {
@@ -67,8 +68,8 @@ export const NavBar = () => {
                             <TbMenu2 />
                         </MenuButton>
                         <MenuList>
-                            <MenuItem>Search password</MenuItem>
-                            <MenuItem onClick={handleModalClick}>Add password</MenuItem>
+                            <MenuItem disabled>Search vault entries</MenuItem>
+                            <MenuItem onClick={handleModalClick}>Add vault entry</MenuItem>
                             <MenuItem onClick={handleSignOut}>Logout</MenuItem>
                         </MenuList>
                     </Menu>

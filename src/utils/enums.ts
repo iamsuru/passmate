@@ -78,6 +78,7 @@ export enum ErrorMessage {
     INVALID_EMAIL_ID_NOT_PROVIDED = 'Invalid email id provided',
     EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified',
     PLATFORM_NAME_NOT_PROVIDED = 'Platform name is not provided',
+    FAILED_TO_FETCH_VAULT_ENTRIES = 'Failed to fetch vault entries',
     FAILED_TO_CREATE_VAULT_ENTRY = 'Failed to create vault entry',
     FAILED_TO_UPDATE_VAULT_ENTRY = 'Failed to update vault credentials',
     FAILED_TO_DELETE_VAULT_ENTRY = 'Failed to delete vault credentials'

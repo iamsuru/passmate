@@ -5,6 +5,7 @@ import { TCredentialsCard, TCredentialSchema, TFetchPasswordResponse } from "../
 import { PasswordService } from "../services/passwordService";
 import { Cookie } from "../cookies/cookie";
 import { eventBus } from "../utils/eventBus";
+import { ErrorMessage } from "../utils/enums";
 
 export const HomeScreen = () => {
     const passwordService = new PasswordService();
@@ -17,7 +18,7 @@ export const HomeScreen = () => {
         const fetchData = async () => {
             try {
                 const uid = cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)?.uid;
-                const response: TFetchPasswordResponse = await passwordService.fetchPasswordCredentials(uid);
+                const response: TFetchPasswordResponse = await passwordService.retrieveVaultCredentials(uid);
                 if (response.code === 200) {
                     const rawData: any = response.data;
                     const credentialsArray = Object.keys(rawData)
@@ -39,7 +40,7 @@ export const HomeScreen = () => {
                 }
             } catch (error: any) {
                 toast({
-                    description: error.message || "Failed to fetch credentials.",
+                    description: error.message || ErrorMessage.FAILED_TO_FETCH_VAULT_ENTRIES,
                     status: "error",
                     duration: 5000,
                     isClosable: true,

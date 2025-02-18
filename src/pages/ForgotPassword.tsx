@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import { AuthService } from "../services/authService";
+import { TResponse } from "../utils/types";
 
 export const ForgotPasswordPage = () => {
     const authService = new AuthService()
@@ -18,7 +19,7 @@ export const ForgotPasswordPage = () => {
 
     const sendResetPasswordLink = async () => {
         setIsLoading(true)
-        const response = await authService.forgotPasswordLink(email)
+        const response: TResponse = await authService.forgotPasswordLink(email)
         if (response.code === 200) {
             toast({
                 description: response.message,
