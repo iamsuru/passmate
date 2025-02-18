@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, deleteUser, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, User } from 'firebase/auth'
-import { TAuthenticateUser, TCreatedUser, TGetUser, TSignout, TUpdateUserDataResponse, TUserDetails, TUsernameTaken } from '../utils/types'
+import { TAuthenticateUser, TGetUser, TResponse, TUserDetails, TUsernameTaken } from '../utils/types'
 import { auth } from '../firebase/config'
 import { ErrorMessage, ResponseMessage } from '../utils/enums'
 import { createHashedPassword } from '../utils/bcrypt'
@@ -16,7 +16,7 @@ export class AuthService {
         this.cookie = new Cookie();
     }
 
-    registerUser = async (userDetails: TUserDetails): Promise<TCreatedUser> => {
+    registerUser = async (userDetails: TUserDetails): Promise<TResponse> => {
         try {
             const { email, username, password } = userDetails
 
@@ -48,7 +48,7 @@ export class AuthService {
             userDetails.uid = uid
             userDetails.password = hashedPassword
 
-            const result: TUpdateUserDataResponse = await this.databaseService.updateUserData(userDetails);
+            const result: TResponse = await this.databaseService.createUserData(userDetails);
 
             if (result.code === 201) {
                 const isVerificationEmailSent = await this.emailVerificationLink(newUser.user)
@@ -74,7 +74,7 @@ export class AuthService {
         }
     }
 
-    private emailVerificationLink = async (user: User) => {
+    private emailVerificationLink = async (user: User): Promise<boolean | TResponse> => {
         try {
             await sendEmailVerification(user)
             return true
@@ -133,7 +133,7 @@ export class AuthService {
         }
     }
 
-    forgotPasswordLink = async (email: string) => {
+    forgotPasswordLink = async (email: string): Promise<TResponse> => {
         try {
             const isEmailValidated = validateEmail(email)
             if (!isEmailValidated.status) {
@@ -159,7 +159,7 @@ export class AuthService {
         }
     }
 
-    signOut = async (key: string): Promise<TSignout> => {
+    signOut = async (key: string): Promise<TResponse> => {
         try {
             await auth.signOut();
             this.cookie.clearCookie(key);
