@@ -1,7 +1,7 @@
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Stack, useToast } from "@chakra-ui/react";
 import { CustomButton } from "./Button";
 import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums";
-import { TStoreModalProps, TUpdateVaultCredentials } from "../utils/types";
+import { TResponse, TStoreModalProps, TUpdateVaultEntry } from "../utils/types";
 import { Identifier } from "./Identifier";
 import { useState } from "react";
 import { PasswordService } from "../services/passwordService";
@@ -24,7 +24,7 @@ const StorePasswordModal = ({ id, flag, isOpen, onClose }: TStoreModalProps) => 
         setIsLoading(true);
         const uid = cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!).uid
         const passwordCredentials = { uid, platformName, accountUsername, accountPassword };
-        const response: any = await passwordService.storePasswordCredentials(passwordCredentials)
+        const response: TResponse = await passwordService.storeVaultCredentials(passwordCredentials)
 
         if (response.code === 201) {
             toast({
@@ -60,7 +60,7 @@ const StorePasswordModal = ({ id, flag, isOpen, onClose }: TStoreModalProps) => 
 
         const uid = cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)?.uid;
 
-        let updateVaultCredentials: TUpdateVaultCredentials = { id: id!, uid };
+        let updateVaultCredentials: TUpdateVaultEntry = { id: id!, uid };
 
         if (accountUsername) updateVaultCredentials.accountUsername = accountUsername;
         else if (accountPassword) updateVaultCredentials.accountPassword = accountPassword;
