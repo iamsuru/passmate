@@ -19,30 +19,30 @@ export const ForgotPasswordPage = () => {
 
     const sendResetPasswordLink = async () => {
         setIsLoading(true)
+        //setting all previous errors to empty if have
+        setErrors({})
         const response: TResponse = await authService.forgotPasswordLink(email)
         if (response.code === 200) {
             toast({
                 description: response.message,
                 status: "success",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             })
-            setTimeout(() => {
-                navigate('/');
-            }, 4000);
+            navigate('/');
         } else {
             const newErrors: { [key: string]: boolean } = {};
             if (response?.code === 406) {
-                newErrors[`${response?.type}ForgotPassword`] = true
+                newErrors[`forgot-password-${response?.type}`] = true
+                setErrors(newErrors)
             }
-            setErrors(newErrors)
             toast({
                 description: response.message,
                 status: "error",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             });
         }
         setIsLoading(false)
@@ -66,7 +66,7 @@ export const ForgotPasswordPage = () => {
             >
                 <FormControl>
                     <Stack>
-                        <Identifier id={IdentiferIds.EMAILFORGOTPASSWORD} icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} isError={errors['emailForgotPassword']} />
+                        <Identifier id={IdentiferIds.FORGOT_PASSWORD_EMAIL} icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} isError={errors[IdentiferIds.FORGOT_PASSWORD_EMAIL]} />
                         <CustomButton buttonName={ButtonName.PASSWORD_RESET_LINK} bgColor={Color.TEAL_800} variant={Variant.SOLID} onClick={sendResetPasswordLink} isLoading={isLoading} />
                     </Stack>
                 </FormControl>

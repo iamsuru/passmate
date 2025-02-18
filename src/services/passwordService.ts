@@ -1,6 +1,6 @@
 import { encrypt } from "../utils/crypto";
 import { ErrorMessage, ResponseMessage } from "../utils/enums";
-import { TDeleteVaultCredentials, TFetchPasswordResponse, TResponse, TStorePasswordResponse, TUpdateVaultEntry, TVaultEntry } from "../utils/types";
+import { TDeleteVaultCredentials, TFetchPasswordResponse, TResponse, TUpdateVaultEntry, TVaultEntry } from "../utils/types";
 import { validatePlatformName, validateAccountUsername, validateAccountPassword } from "../utils/validations";
 import { DatabaseService } from "./databaseService";
 
@@ -67,48 +67,48 @@ export class PasswordService {
     updateVaultCredentials = async (updateVaultCredentials: TUpdateVaultEntry): Promise<TResponse> => {
         try {
             if (updateVaultCredentials.accountUsername) {
-                const isAccountUsernameValidated = validateAccountUsername(updateVaultCredentials.accountUsername)
+                const isAccountUsernameValidated = validateAccountUsername(updateVaultCredentials.accountUsername);
                 if (!isAccountUsernameValidated.status) {
                     return {
                         code: 406,
                         type: isAccountUsernameValidated.type!,
                         message: isAccountUsernameValidated.message!
-                    }
+                    };
                 }
             }
 
             if (updateVaultCredentials.accountPassword) {
-                const isAccountUsernameValidated = validateAccountPassword(updateVaultCredentials.accountPassword)
-                if (!isAccountUsernameValidated.status) {
+                const isAccountPasswordValidated = validateAccountPassword(updateVaultCredentials.accountPassword);
+                if (!isAccountPasswordValidated.status) {
                     return {
                         code: 406,
-                        type: isAccountUsernameValidated.type!,
-                        message: isAccountUsernameValidated.message!
-                    }
+                        type: isAccountPasswordValidated.type!,
+                        message: isAccountPasswordValidated.message!
+                    };
                 }
+                updateVaultCredentials.accountPassword = encrypt(updateVaultCredentials.accountPassword);
             }
 
-            updateVaultCredentials.accountPassword = encrypt(updateVaultCredentials.accountPassword!)
-
+            // Update vault entry in the database
             const result: TResponse = await this.databaseService.updateVaultEntry(updateVaultCredentials);
-
             if (result.code === 200) {
                 return {
                     code: result.code,
                     message: ResponseMessage.VAULT_ENTRY_UPDATED_SUCCESSFULLY
-                }
+                };
             }
+
             return {
                 code: 400,
                 message: result.message ?? ErrorMessage.FAILED_TO_UPDATE_VAULT_ENTRY
-            }
+            };
         } catch (error: any) {
             return {
                 code: 500,
                 message: error.message ?? ErrorMessage.FAILED_TO_UPDATE_VAULT_ENTRY
-            }
+            };
         }
-    }
+    };
 
     deleteVaultCredentials = async (deleteVaultCredentials: TDeleteVaultCredentials): Promise<TResponse> => {
         try {

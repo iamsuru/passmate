@@ -22,6 +22,8 @@ export const LoginPage = () => {
 
     const handleLogin = async () => {
         setIsLoading(true);
+        //setting all previous errors to empty if have
+        setErrors({})
         const userDetails: TUserDetails = { email, password };
 
         const response: TAuthenticateUser = await authService.authenticateUser(userDetails);
@@ -30,29 +32,26 @@ export const LoginPage = () => {
             toast({
                 description: response.message,
                 status: "success",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             });
 
             cookie.setCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!, response.data)
-
-            setTimeout(() => {
-                navigate('/home-screen');
-            }, 4000);
+            navigate('/home-screen');
         } else {
             const newErrors: { [key: string]: boolean } = {};
             if (response?.code === 406) {
-                newErrors[`${response?.type}Login`] = true
+                newErrors[`login-${response?.type}`] = true
+                setErrors(newErrors)
             }
-            setErrors(newErrors)
 
             toast({
                 description: response.message,
                 status: "error",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             });
         }
         setIsLoading(false);
@@ -61,8 +60,8 @@ export const LoginPage = () => {
     return (
         <FormControl>
             <Stack>
-                <Identifier id={IdentiferIds.EMAILLOGIN} icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} isError={errors['emailLogin']} />
-                <Password id={IdentiferIds.PASSWORDLOGIN} onChange={(e) => setPassword(e.target.value)} isError={errors['passwordLogin']} />
+                <Identifier id={IdentiferIds.LOGIN_EMAIL} icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} isError={errors[IdentiferIds.LOGIN_EMAIL]} />
+                <Password id={IdentiferIds.LOGIN_PASSWORD} onChange={(e) => setPassword(e.target.value)} isError={errors[IdentiferIds.LOGIN_PASSWORD]} />
                 <CustomButton buttonName={ButtonName.LOGIN_BUTTON} bgColor={Color.TEAL_800} variant={Variant.SOLID} onClick={handleLogin} isLoading={isLoading} />
                 {/* <GoogleSSOBtn buttonName={ButtonName.GOOGLE_SSO_BUTTON} bgColor={Color.TEAL_800} variant={Variant.OUTLINE} onClick={handleSSOLogin} isLoading={isLoading} /> */}
                 <Box textAlign='right' color={Color.GRAY_300}>

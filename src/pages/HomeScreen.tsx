@@ -5,7 +5,7 @@ import { TCredentialsCard, TCredentialSchema, TFetchPasswordResponse } from "../
 import { PasswordService } from "../services/passwordService";
 import { Cookie } from "../cookies/cookie";
 import { eventBus } from "../utils/eventBus";
-import { ErrorMessage } from "../utils/enums";
+import { ErrorMessage, ResponseMessage } from "../utils/enums";
 
 export const HomeScreen = () => {
     const passwordService = new PasswordService();
@@ -27,24 +27,32 @@ export const HomeScreen = () => {
                             ...rawData[key],
                         }))
                         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-
+                    if (credentialsArray.length === 0) {
+                        toast({
+                            description: ResponseMessage.VAULT_IS_EMPTY,
+                            status: "info",
+                            duration: 3000,
+                            isClosable: true,
+                            position: "top",
+                        });
+                    }
                     setCredentials(credentialsArray);
                 } else {
                     toast({
                         description: response.message,
                         status: "error",
-                        duration: 5000,
+                        duration: 3000,
                         isClosable: true,
-                        position: "bottom",
+                        position: "top",
                     });
                 }
             } catch (error: any) {
                 toast({
                     description: error.message || ErrorMessage.FAILED_TO_FETCH_VAULT_ENTRIES,
                     status: "error",
-                    duration: 5000,
+                    duration: 3000,
                     isClosable: true,
-                    position: "bottom",
+                    position: "top",
                 });
             }
         };

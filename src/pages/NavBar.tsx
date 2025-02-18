@@ -42,9 +42,9 @@ export const NavBar = () => {
             toast({
                 description: response.message,
                 status: "error",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             })
         }
     }
@@ -68,7 +68,7 @@ export const NavBar = () => {
                             <TbMenu2 />
                         </MenuButton>
                         <MenuList>
-                            <MenuItem disabled>Search vault entries</MenuItem>
+                            <MenuItem isDisabled>Search vault entries</MenuItem>
                             <MenuItem onClick={handleModalClick}>Add vault entry</MenuItem>
                             <MenuItem onClick={handleSignOut}>Logout</MenuItem>
                         </MenuList>

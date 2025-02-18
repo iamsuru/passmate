@@ -20,6 +20,8 @@ const CustomModal = ({ isOpen, onClose, title, username, password, modalType }: 
     const [errors, setErrors] = useState<{ [key: string]: boolean }>({})
 
     useEffect(() => {
+        //ensuring that everytime users needs to enter password
+        setGivenPassword("")
         if (!isOpen) {
             setModalTypeValue(ModalType.VERIFICATION);
         } else {
@@ -29,6 +31,8 @@ const CustomModal = ({ isOpen, onClose, title, username, password, modalType }: 
 
     const verifyGivenPassword = async () => {
         setIsLoading(true)
+        //setting all previous errors to empty if have
+        setErrors({})
         const email: string = cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!).email
         const userDetails: TUserDetails = { email, password: givenPassword };
 
@@ -39,15 +43,15 @@ const CustomModal = ({ isOpen, onClose, title, username, password, modalType }: 
         } else {
             const newErrors: { [key: string]: boolean } = {};
             if (response?.code === 406) {
-                newErrors[`${response?.type}Login`] = true
+                newErrors[`validate-${response?.type}`] = true
                 setErrors(newErrors)
             }
             toast({
                 description: response.message,
                 status: "error",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             });
         }
         setIsLoading(false)

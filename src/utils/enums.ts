@@ -5,7 +5,7 @@ export enum ButtonName {
     VERIFY_BUTTON = 'Verify',
     PASSWORD_RESET_LINK = 'Send Reset Password Link',
     SAVE_PASSWORD = 'Save Password',
-    UPDATE = 'Update'
+    UPDATE = 'Verify & Update'
 }
 
 export enum PlaceHolder {
@@ -34,7 +34,8 @@ export enum Variant {
 
 export enum ModalType {
     VERIFICATION = 'verification',
-    PASSWORD = 'password'
+    PASSWORD = 'password',
+    VAULT_ENTRY = 'vault-entry',
 }
 
 export enum Color {
@@ -62,6 +63,8 @@ export enum ResponseMessage {
     PASSWORD_STORED_SUCCESSFULLY = 'Password stored successfully in vault',
     VAULT_ENTRY_UPDATED_SUCCESSFULLY = 'Vault entry updated successfully',
     VAULT_ENTRY_DELETED_SUCCESSFULLY = 'Vault entry deleted successfully',
+    EMAIL_ID_ALREADY_IN_USE = 'Email id already in use',
+    VAULT_IS_EMPTY = 'Nothing stored in passmate'
 }
 
 export enum ErrorMessage {
@@ -81,27 +84,28 @@ export enum ErrorMessage {
     FAILED_TO_FETCH_VAULT_ENTRIES = 'Failed to fetch vault entries',
     FAILED_TO_CREATE_VAULT_ENTRY = 'Failed to create vault entry',
     FAILED_TO_UPDATE_VAULT_ENTRY = 'Failed to update vault credentials',
-    FAILED_TO_DELETE_VAULT_ENTRY = 'Failed to delete vault credentials'
+    FAILED_TO_DELETE_VAULT_ENTRY = 'Failed to delete vault credentials',
+    FIELD_CAN_NOT_BE_EMPTY = 'Field can not be empty',
 }
 
 export enum ValidateInputType {
     EMAIL = 'email',
     USERNAME = 'username',
     PASSWORD = 'password',
-    PLATFORM_NAME = 'platform_name',
-    ACCOUNT_USERNAME = 'account_username',
-    ACCOUNT_PASSWORD = 'account_password',
+    PLATFORM_NAME = 'platform-name',
+    ACCOUNT_USERNAME = 'account-username',
+    ACCOUNT_PASSWORD = 'account-password',
 }
 
 export enum IdentiferIds {
-    EMAILLOGIN = 'emailLogin',
-    PASSWORDLOGIN = 'passwordLogin',
-    EMAILREGISTRATION = 'emailRegistration',
-    USERNAMEREGISTRATION = 'usernameRegistration',
-    PASSWORDREGISTRATION = 'passwordRegistration',
-    EMAILFORGOTPASSWORD = 'emailForgotPassword',
-    PLATFORM_NAME = 'platform_name',
-    ACCOUNT_USERNAME = 'account_username',
-    ACCOUNT_PASSWORD = 'account_password',
-    VALIDATE_PASSWORD = 'validate_password'
+    LOGIN_EMAIL = 'login-email',
+    LOGIN_PASSWORD = 'login-password',
+    REGISTRATION_EMAIL = 'registration-email',
+    REGISTRATION_USERNAME = 'registration-username',
+    REGISTRATION_PASSWORD = 'registration-password',
+    FORGOT_PASSWORD_EMAIL = 'forgot-password-email',
+    PLATFORM_NAME = 'platform-name',
+    ACCOUNT_USERNAME = 'account-username',
+    ACCOUNT_PASSWORD = 'account-password',
+    VALIDATE_PASSWORD = 'validate-password'
 }

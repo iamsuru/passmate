@@ -67,6 +67,12 @@ export class AuthService {
             }
 
         } catch (error: any) {
+            if (error.code === 'auth/email-already-in-use') {
+                return {
+                    code: 400,
+                    message: ResponseMessage.EMAIL_ID_ALREADY_IN_USE
+                };
+            }
             return {
                 code: 500,
                 message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR

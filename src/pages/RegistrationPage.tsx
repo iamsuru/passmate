@@ -5,15 +5,13 @@ import { CustomButton } from "../components/Button"
 import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums"
 import { MdAlternateEmail, MdEmail } from 'react-icons/md'
 import { TResponse, TUserDetails } from "../utils/types"
-import { useNavigate } from "react-router-dom"
 import { AuthService } from "../services/authService"
 import { useState } from "react"
 
-export const RegistrationPage = () => {
+export const RegistrationPage = ({ onRegistrationSuccess }: { onRegistrationSuccess: () => void }) => {
     const authService = new AuthService()
 
     const toast = useToast()
-    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false)
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
@@ -23,6 +21,8 @@ export const RegistrationPage = () => {
 
     const handleUserCreation = async () => {
         setIsLoading(true)
+        //setting all previous errors to empty if have
+        setErrors({})
         const userDetails: TUserDetails = {
             email,
             username,
@@ -33,25 +33,23 @@ export const RegistrationPage = () => {
             toast({
                 description: response.message,
                 status: "success",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             })
-            setTimeout(() => {
-                navigate('/');
-            }, 4000);
+            onRegistrationSuccess();
         } else {
             const newErrors: { [key: string]: boolean } = {};
             if (response?.code === 406) {
-                newErrors[`${response?.type}Registration`] = true
+                newErrors[`registration-${response?.type}`] = true
             }
             setErrors(newErrors)
             toast({
                 description: response.message,
                 status: "error",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             });
         }
         setIsLoading(false)
@@ -59,9 +57,9 @@ export const RegistrationPage = () => {
     return (
         <FormControl>
             <Stack>
-                <Identifier id={IdentiferIds.EMAILREGISTRATION} icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} isError={errors['emailRegistration']} />
-                <Identifier id={IdentiferIds.USERNAMEREGISTRATION} icon={MdAlternateEmail} placeHolder={PlaceHolder.USERNAME} onChange={(e) => setUsername(e.target.value)} isError={errors['usernameRegistration']} />
-                <Password id={IdentiferIds.PASSWORDREGISTRATION} onChange={(e) => setPassword(e.target.value)} isError={errors['passwordRegistration']} />
+                <Identifier id={IdentiferIds.REGISTRATION_EMAIL} icon={MdEmail} placeHolder={PlaceHolder.EMAIL} onChange={(e) => setEmail(e.target.value)} isError={errors[IdentiferIds.REGISTRATION_EMAIL]} />
+                <Identifier id={IdentiferIds.REGISTRATION_USERNAME} icon={MdAlternateEmail} placeHolder={PlaceHolder.USERNAME} onChange={(e) => setUsername(e.target.value)} isError={errors[IdentiferIds.REGISTRATION_USERNAME]} />
+                <Password id={IdentiferIds.REGISTRATION_PASSWORD} onChange={(e) => setPassword(e.target.value)} isError={errors[IdentiferIds.REGISTRATION_PASSWORD]} />
                 <CustomButton buttonName={ButtonName.SIGN_UP_BUTTON} bgColor={Color.PURPLE_700} variant={Variant.SOLID} onClick={handleUserCreation} isLoading={isLoading} />
                 {/* <GoogleSSOBtn buttonName={ButtonName.GOOGLE_SSO_BUTTON} bgColor={Color.PURPLE_700} variant={Variant.OUTLINE} onClick={handleUserCreation} isLoading={isLoading} /> */}
             </Stack>

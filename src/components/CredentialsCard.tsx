@@ -49,9 +49,9 @@ export const CredentialsCard = ({ id, platformName, accountUsername, accountPass
             toast({
                 description: response.message,
                 status: "success",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             });
             eventBus.emit("refresh")
             //closing the modal
@@ -60,9 +60,9 @@ export const CredentialsCard = ({ id, platformName, accountUsername, accountPass
             toast({
                 description: response.message,
                 status: "error",
-                duration: 5000,
+                duration: 3000,
                 isClosable: true,
-                position: 'bottom'
+                position: 'top'
             });
         }
 

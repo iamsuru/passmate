@@ -2,8 +2,10 @@ import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { LoginPage } from "./LoginPage"
 import { RegistrationPage } from "./RegistrationPage"
 import { Color, TabName, Variant } from "../utils/enums"
+import { useState } from "react"
 
 export const HomePage = () => {
+    const [tabIndex, setTabIndex] = useState(0);
     return (
         <Box
             display="flex"
@@ -21,7 +23,7 @@ export const HomePage = () => {
                 maxW="sm"
                 width="full"
             >
-                <Tabs isFitted colorScheme={Color.GREEN} variant={Variant.UNSTYLED}>
+                <Tabs isFitted colorScheme={Color.GREEN} variant={Variant.UNSTYLED} index={tabIndex} onChange={(index) => setTabIndex(index)}>
                     <TabList mb='15px'>
                         <Tab _selected={{ color: Color.WHITE, bg: Color.TEAL_800 }}>{TabName.SIGN_IN}</Tab>
                         <Tab _selected={{ color: Color.WHITE, bg: Color.PURPLE_700 }}>{TabName.SIGN_UP}</Tab>
@@ -31,7 +33,7 @@ export const HomePage = () => {
                             <LoginPage />
                         </TabPanel>
                         <TabPanel>
-                            <RegistrationPage />
+                            <RegistrationPage onRegistrationSuccess={() => setTabIndex(0)} />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>

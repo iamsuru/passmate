@@ -54,7 +54,7 @@ const StoreModalProps = Type.Object({
     id: Type.Optional(Type.String()),
     isOpen: Type.Boolean(),
     onClose: Type.Function([], Type.Void()),
-    flag: Type.Optional(Type.Union([Type.String(), Type.Boolean()]))
+    flag: Type.Optional(Type.Union([Type.String(), Type.Boolean()])),
 })
 
 export type TStoreModalProps = Static<typeof StoreModalProps>

@@ -84,6 +84,13 @@ export const validatePlatformName = (platformName: string): TValidations => {
 }
 
 export const validateAccountUsername = (accountUsername: string): TValidations => {
+    if (!accountUsername) {
+        return {
+            status: false,
+            type: ValidateInputType.ACCOUNT_USERNAME,
+            message: ErrorMessage.ACCOUNT_USERNAME_NOT_PROVIDED
+        }
+    }
     accountUsername = accountUsername.trim()
     if (!accountUsername || accountUsername.length === 0) {
         return {
@@ -96,6 +103,13 @@ export const validateAccountUsername = (accountUsername: string): TValidations =
 }
 
 export const validateAccountPassword = (accountPassword: string): TValidations => {
+    if (!accountPassword) {
+        return {
+            status: false,
+            type: ValidateInputType.ACCOUNT_PASSWORD,
+            message: ErrorMessage.ACCOUNT_PASSWORD_NOT_PROVIDED
+        }
+    }
     accountPassword = accountPassword.trim()
     if (!accountPassword || accountPassword.length === 0) {
         return {
