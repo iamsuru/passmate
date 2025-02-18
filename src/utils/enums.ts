@@ -5,6 +5,7 @@ export enum ButtonName {
     VERIFY_BUTTON = 'Verify',
     PASSWORD_RESET_LINK = 'Send Reset Password Link',
     SAVE_PASSWORD = 'Save Password',
+    UPDATE = 'Update'
 }
 
 export enum PlaceHolder {
@@ -59,6 +60,8 @@ export enum ResponseMessage {
     PASSWORD_RESET_LINK_SENT_SUCCESSFULLY = 'Password reset link sent successfully',
     SESSION_HAS_EXPIRED = 'Your session has expired. Please log in again to continue',
     PASSWORD_STORED_SUCCESSFULLY = 'Password stored successfully in vault',
+    VAULT_CREDENTIALS_UPDATED_SUCCESSFULLY = 'Vault credentials updated successfully',
+    VAULT_CREDENTIALS_DELETED_SUCCESSFULLY = 'Vault credentials deleted successfully',
 }
 
 export enum ErrorMessage {
@@ -76,6 +79,8 @@ export enum ErrorMessage {
     INVALID_EMAIL_ID_NOT_PROVIDED = 'Invalid email id provided',
     EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified',
     PLATFORM_NAME_NOT_PROVIDED = 'Platform name is not provided',
+    FAILED_TO_UPDATE_VAULT_CREDENTIALS = 'Failed to update vault credentials',
+    FAILED_TO_DELETE_VAULT_CREDENTIALS = 'Failed to delete vault credentials'
 }
 
 export enum ValidateInputType {

@@ -1,7 +1,7 @@
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Stack, useToast } from "@chakra-ui/react";
 import { CustomButton } from "./Button";
 import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums";
-import { TStoreModalProps } from "../utils/types";
+import { TStoreModalProps, TUpdateVaultCredentials } from "../utils/types";
 import { Identifier } from "./Identifier";
 import { useState } from "react";
 import { PasswordService } from "../services/passwordService";
@@ -11,7 +11,7 @@ import { eventBus } from "../utils/eventBus";
 const passwordService = new PasswordService()
 const cookie = new Cookie()
 
-const StorePasswordModal = ({ isOpen, onClose }: TStoreModalProps) => {
+const StorePasswordModal = ({ id, flag, isOpen, onClose }: TStoreModalProps) => {
     const toast = useToast();
 
     const [platformName, setPlatformName] = useState("")
@@ -55,6 +55,47 @@ const StorePasswordModal = ({ isOpen, onClose }: TStoreModalProps) => {
         setIsLoading(false);
     };
 
+    const handleUpdateVaultCredentials = async () => {
+        setIsLoading(true);
+
+        const uid = cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)?.uid;
+
+        let updateVaultCredentials: TUpdateVaultCredentials = { id: id!, uid };
+
+        if (accountUsername) updateVaultCredentials.accountUsername = accountUsername;
+        else if (accountPassword) updateVaultCredentials.accountPassword = accountPassword;
+
+        const response: any = await passwordService.updateVaultCredentials(updateVaultCredentials);
+
+        if (response.code === 200) {
+            toast({
+                description: response.message,
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: 'bottom'
+            });
+            eventBus.emit("refresh")
+            //closing the modal
+            onClose();
+        } else {
+            const newErrors: { [key: string]: boolean } = {};
+            if (response?.code === 406) {
+                newErrors[`${response?.type}`] = true
+                setErrors(newErrors)
+            }
+
+            toast({
+                description: response.message,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: 'bottom'
+            });
+        }
+        setIsLoading(false);
+    };
+
     return (
         <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false} closeOnEsc={false} >
             <ModalOverlay textAlign='center' backdropFilter="blur(8px)" />
@@ -64,11 +105,42 @@ const StorePasswordModal = ({ isOpen, onClose }: TStoreModalProps) => {
                 <ModalCloseButton ml={'5px'} bgColor={Color.PURPLE_700} />
                 <ModalBody p={'5'} textAlign={'start'}>
                     <Stack>
-                        <Identifier id={IdentiferIds.PLATFORM_NAME} placeHolder={PlaceHolder.PLATFORM_NAME} onChange={(e) => { setPlatformName(e.target.value) }} isError={errors[IdentiferIds.PLATFORM_NAME]} />
-                        <Identifier id={IdentiferIds.ACCOUNT_USERNAME} placeHolder={PlaceHolder.ACCOUNT_USERNAME} onChange={(e) => { setAccountUsername(e.target.value) }} isError={errors[IdentiferIds.ACCOUNT_USERNAME]} />
-                        <Identifier id={IdentiferIds.ACCOUNT_PASSWORD} placeHolder={PlaceHolder.ACCOUNT_PASSWORD} onChange={(e) => { setAccountPassword(e.target.value) }} isError={errors[IdentiferIds.ACCOUNT_PASSWORD]} />
-                        <CustomButton buttonName={ButtonName.SAVE_PASSWORD} variant={Variant.SOLID} bgColor={Color.PURPLE_700} onClick={handleStorePassword} isLoading={isLoading} />
+                        {(flag === true || flag === IdentiferIds.PLATFORM_NAME) && (
+                            <Identifier
+                                id={IdentiferIds.PLATFORM_NAME}
+                                placeHolder={PlaceHolder.PLATFORM_NAME}
+                                onChange={(e) => setPlatformName(e.target.value)}
+                                isError={errors[IdentiferIds.PLATFORM_NAME]}
+                            />
+                        )}
+
+                        {(flag === true || flag === IdentiferIds.ACCOUNT_USERNAME) && (
+                            <Identifier
+                                id={IdentiferIds.ACCOUNT_USERNAME}
+                                placeHolder={PlaceHolder.ACCOUNT_USERNAME}
+                                onChange={(e) => setAccountUsername(e.target.value)}
+                                isError={errors[IdentiferIds.ACCOUNT_USERNAME]}
+                            />
+                        )}
+
+                        {(flag === true || flag === IdentiferIds.ACCOUNT_PASSWORD) && (
+                            <Identifier
+                                id={IdentiferIds.ACCOUNT_PASSWORD}
+                                placeHolder={PlaceHolder.ACCOUNT_PASSWORD}
+                                onChange={(e) => setAccountPassword(e.target.value)}
+                                isError={errors[IdentiferIds.ACCOUNT_PASSWORD]}
+                            />
+                        )}
+
+                        <CustomButton
+                            buttonName={flag === true ? ButtonName.SAVE_PASSWORD : ButtonName.UPDATE}
+                            variant={Variant.SOLID}
+                            bgColor={Color.PURPLE_700}
+                            onClick={flag === true ? handleStorePassword : handleUpdateVaultCredentials}
+                            isLoading={isLoading}
+                        />
                     </Stack>
+
                 </ModalBody>
             </ModalContent >
         </Modal >

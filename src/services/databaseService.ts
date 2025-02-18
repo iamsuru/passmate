@@ -1,5 +1,5 @@
-import { get, push, ref, set } from 'firebase/database';
-import { TFetchPasswordResponse, TGetUser, TPasswordCredentials, TSavePlatformCredentials, TUpdateUserDataResponse, TUserDetails, TUsernameTaken } from '../utils/types';
+import { get, push, ref, remove, set, update } from 'firebase/database';
+import { TCommonResponse, TDeleteVaultCredentials, TFetchPasswordResponse, TGetUser, TPasswordCredentials, TSavePlatformCredentials, TUpdateUserDataResponse, TUpdateVaultCredentials, TUpdateVaultResponse, TUserDetails, TUsernameTaken } from '../utils/types';
 import { db } from '../firebase/config';
 import { comparePassword } from '../utils/bcrypt';
 import { ErrorMessage, ResponseMessage } from '../utils/enums';
@@ -119,6 +119,44 @@ export class DatabaseService {
             return {
                 code: 500,
                 message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
+            }
+        }
+    }
+
+    updateVaultEntry = async (updateVaultCredentials: TUpdateVaultCredentials): Promise<TUpdateVaultResponse> => {
+        try {
+            const { id, uid, accountPassword, accountUsername } = updateVaultCredentials
+            const updateVaultObject: Record<string, string> = {};
+            if (accountUsername) updateVaultObject.accountUsername = accountUsername;
+            if (accountPassword) updateVaultObject.accountPassword = accountPassword;
+            updateVaultObject.updatedAt = currentDate();
+
+            const vaultRef = ref(db, `${vaultPath}/${uid}/${id}`);
+
+            await update(vaultRef, updateVaultObject)
+            return {
+                code: 200
+            }
+        } catch (error: any) {
+            return {
+                code: 500,
+                message: error.message ?? ErrorMessage.INTERNAL_SERVER_ERROR,
+            }
+        }
+    }
+
+    deleteVaultEntry = async (deleteVaultEntry: TDeleteVaultCredentials): Promise<TCommonResponse> => {
+        try {
+            const { id, uid } = deleteVaultEntry;
+            const vaultRef = ref(db, `${vaultPath}/${uid}/${id}`);
+            await remove(vaultRef)
+            return {
+                code: 200
+            }
+        } catch (error: any) {
+            return {
+                code: 500,
+                message: error.message ?? ErrorMessage.INTERNAL_SERVER_ERROR,
             }
         }
     }

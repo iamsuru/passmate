@@ -1,15 +1,28 @@
-import { Box, Flex, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import CustomModal from "./CustomModal";
-import { Color, ModalType } from "../utils/enums";
+import { Color, IdentiferIds, ModalType } from "../utils/enums";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { TCredentialsCard } from "../utils/types";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import StorePasswordModal from "./StorePasswordModal";
+import { PasswordService } from "../services/passwordService";
+import { Cookie } from "../cookies/cookie";
+import { eventBus } from "../utils/eventBus";
 
-export const CredentialsCard = ({ platformName, accountUsername, accountPassword }: TCredentialsCard) => {
+export const CredentialsCard = ({ id, platformName, accountUsername, accountPassword }: TCredentialsCard) => {
+    const toast = useToast();
+
+    //for password showing
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [show, setShow] = useState(false)
     const [modalTypeValue, setModalTypeValue] = useState(ModalType.VERIFICATION)
+
+    //for store password modal
+    const [passwordShowModal, setPasswordShowModal] = useState(false)
+    const { isOpen: isStorePasswordModal, onOpen: onOpenStorePasswordModal, onClose: onCloseStorePasswordModal } = useDisclosure();
+    const [identifierId, setIdentifierId] = useState("")
+
     const handleClick = () => {
         setShow(!show)
         onOpen()
@@ -20,6 +33,41 @@ export const CredentialsCard = ({ platformName, accountUsername, accountPassword
         setShow(false);
         onClose();
     };
+
+    const handleStorePasswordModal = () => {
+        setPasswordShowModal(!passwordShowModal)
+        onOpenStorePasswordModal()
+    }
+
+    const handleDeleteVaultCredentials = async (id: string) => {
+        const uid = await new Cookie().getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)?.uid;
+        const deleteObject = { id, uid }
+
+        const response = await new PasswordService().deleteVaultCredentials(deleteObject);
+
+        if (response.code === 200) {
+            toast({
+                description: response.message,
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: 'bottom'
+            });
+            eventBus.emit("refresh")
+            //closing the modal
+            onClose();
+        } else {
+            toast({
+                description: response.message,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: 'bottom'
+            });
+        }
+
+    }
+
     return (
         <>
             <Box
@@ -47,9 +95,9 @@ export const CredentialsCard = ({ platformName, accountUsername, accountPassword
                                 <BsThreeDotsVertical />
                             </MenuButton>
                             <MenuList>
-                                <MenuItem>Update username</MenuItem>
-                                <MenuItem>Update password</MenuItem>
-                                <MenuItem>Delete credentials</MenuItem>
+                                <MenuItem onClick={() => { setIdentifierId(IdentiferIds.ACCOUNT_USERNAME); handleStorePasswordModal() }}>Update username</MenuItem>
+                                <MenuItem onClick={() => { setIdentifierId(IdentiferIds.ACCOUNT_PASSWORD); handleStorePasswordModal() }}>Update password</MenuItem>
+                                <MenuItem onClick={() => { handleDeleteVaultCredentials(id!) }}>Delete credentials</MenuItem>
                             </MenuList>
                         </Menu>
                     </Flex>
@@ -63,6 +111,13 @@ export const CredentialsCard = ({ platformName, accountUsername, accountPassword
                 username={accountUsername}
                 password={accountPassword}
                 modalType={modalTypeValue}
+            />
+
+            <StorePasswordModal
+                id={id}
+                isOpen={isStorePasswordModal}
+                onClose={onCloseStorePasswordModal}
+                flag={identifierId}
             />
         </>
     );

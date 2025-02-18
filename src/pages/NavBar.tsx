@@ -78,6 +78,7 @@ export const NavBar = () => {
             <StorePasswordModal
                 isOpen={isOpen}
                 onClose={handleModalClose}
+                flag={true}
             />
         </>
     );

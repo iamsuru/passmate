@@ -1,7 +1,7 @@
 import { Box, Stack, useToast } from "@chakra-ui/react";
 import { CredentialsCard } from "../components/CredentialsCard";
 import { useEffect, useState } from "react";
-import { TCredentialSchema, TFetchPasswordResponse } from "../utils/types";
+import { TCredentialsCard, TCredentialSchema, TFetchPasswordResponse } from "../utils/types";
 import { PasswordService } from "../services/passwordService";
 import { Cookie } from "../cookies/cookie";
 import { eventBus } from "../utils/eventBus";
@@ -61,9 +61,10 @@ export const HomeScreen = () => {
     return (
         <Box overflowY="scroll" shadow="md">
             <Stack spacing="1">
-                {credentials.map((item, index) => (
+                {credentials.map((item: TCredentialsCard, index) => (
                     <CredentialsCard
                         key={index}
+                        id={item.id}
                         platformName={item.platformName}
                         accountUsername={item.accountUsername}
                         accountPassword={item.accountPassword}

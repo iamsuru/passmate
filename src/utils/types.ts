@@ -30,6 +30,7 @@ const PasswordField = Type.Object({
 export type TPasswordField = Static<typeof PasswordField>;
 
 const CredentialsCard = Type.Object({
+    id: Type.Optional(Type.String()),
     platformName: Type.String(),
     accountUsername: Type.String(),
     accountPassword: Type.String(),
@@ -50,8 +51,10 @@ const CustomModalProps = Type.Object({
 export type TCustomModalProps = Static<typeof CustomModalProps>
 
 const StoreModalProps = Type.Object({
+    id: Type.Optional(Type.String()),
     isOpen: Type.Boolean(),
     onClose: Type.Function([], Type.Void()),
+    flag: Type.Optional(Type.Union([Type.String(), Type.Boolean()]))
 })
 
 export type TStoreModalProps = Static<typeof StoreModalProps>
@@ -167,3 +170,29 @@ const FetchPlatformCredentialsResponse = Type.Object({
     data: Type.Array(Type.Optional(FetchPlatformCredentials))
 })
 export type TFetchPlatformCredentialsResponse = Static<typeof FetchPlatformCredentialsResponse>
+
+const UpdateVaultCredentials = Type.Object({
+    id: Type.String(),
+    uid: Type.String(),
+    accountUsername: Type.Optional(Type.String()),
+    accountPassword: Type.Optional(Type.String()),
+})
+export type TUpdateVaultCredentials = Static<typeof UpdateVaultCredentials>
+
+const UpdateVaultResponse = Type.Object({
+    code: Type.Number(),
+    message: Type.Optional(Type.String()),
+})
+export type TUpdateVaultResponse = Static<typeof UpdateVaultResponse>
+
+const DeleteVaultCredentials = Type.Object({
+    id: Type.String(),
+    uid: Type.String(),
+})
+export type TDeleteVaultCredentials = Static<typeof DeleteVaultCredentials>
+
+const CommonResponse = Type.Object({
+    code: Type.Number(),
+    message: Type.Optional(Type.String()),
+})
+export type TCommonResponse = Static<typeof CommonResponse>
