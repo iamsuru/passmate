@@ -60,8 +60,8 @@ export enum ResponseMessage {
     PASSWORD_RESET_LINK_SENT_SUCCESSFULLY = 'Password reset link sent successfully',
     SESSION_HAS_EXPIRED = 'Your session has expired. Please log in again to continue',
     PASSWORD_STORED_SUCCESSFULLY = 'Password stored successfully in vault',
-    VAULT_CREDENTIALS_UPDATED_SUCCESSFULLY = 'Vault credentials updated successfully',
-    VAULT_CREDENTIALS_DELETED_SUCCESSFULLY = 'Vault credentials deleted successfully',
+    VAULT_ENTRY_UPDATED_SUCCESSFULLY = 'Vault entry updated successfully',
+    VAULT_ENTRY_DELETED_SUCCESSFULLY = 'Vault entry deleted successfully',
 }
 
 export enum ErrorMessage {
@@ -70,7 +70,6 @@ export enum ErrorMessage {
     USERNAME_IS_NOT_PROVIDED = 'Username is not provided',
     PASSWORD_IS_NOT_PROVIDED = 'Password is not provided',
     INTERNAL_SERVER_ERROR = 'Internal server error',
-    FAILED_TO_STORE_PASSWORD = 'Failed to stored password in vault',
     ACCOUNT_USERNAME_NOT_PROVIDED = 'Account username not provided',
     ACCOUNT_PASSWORD_NOT_PROVIDED = 'Account password not provided',
     ERROR_OCCURRED_WHILE_SIGN_OUT = "Error occurred while signing out",
@@ -79,8 +78,9 @@ export enum ErrorMessage {
     INVALID_EMAIL_ID_NOT_PROVIDED = 'Invalid email id provided',
     EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified',
     PLATFORM_NAME_NOT_PROVIDED = 'Platform name is not provided',
-    FAILED_TO_UPDATE_VAULT_CREDENTIALS = 'Failed to update vault credentials',
-    FAILED_TO_DELETE_VAULT_CREDENTIALS = 'Failed to delete vault credentials'
+    FAILED_TO_CREATE_VAULT_ENTRY = 'Failed to create vault entry',
+    FAILED_TO_UPDATE_VAULT_ENTRY = 'Failed to update vault credentials',
+    FAILED_TO_DELETE_VAULT_ENTRY = 'Failed to delete vault credentials'
 }
 
 export enum ValidateInputType {

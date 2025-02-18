@@ -192,6 +192,7 @@ export type TDeleteVaultCredentials = Static<typeof DeleteVaultCredentials>
 
 const Response = Type.Object({
     code: Type.Number(),
+    type: Type.Optional(Type.String()),
     message: Type.Optional(Type.String()),
 })
 export type TResponse = Static<typeof Response>
