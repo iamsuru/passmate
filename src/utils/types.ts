@@ -100,14 +100,14 @@ const signOut = Type.Object({
 
 export type TSignout = Static<typeof signOut>
 
-const PasswordCredentials = Type.Object({
+const VaultEntry = Type.Object({
     uid: Type.String(),
     platformName: Type.String(),
     accountUsername: Type.String(),
     accountPassword: Type.String(),
 })
 
-export type TPasswordCredentials = Static<typeof PasswordCredentials>
+export type TVaultEntry = Static<typeof VaultEntry>
 
 // Password Service
 const StorePasswordResponse = Type.Object({
@@ -141,9 +141,8 @@ const UpdateUserDataResponse = Type.Object({
 export type TUpdateUserDataResponse = Static<typeof UpdateUserDataResponse>
 
 const usernameTaken = Type.Object({
-    isUsernameTaken: Type.Optional(Type.Boolean()),
+    isUsernameTaken: Type.Boolean(),
     code: Type.Number(),
-    message: Type.Optional(Type.String())
 })
 export type TUsernameTaken = Static<typeof usernameTaken>
 
@@ -171,13 +170,13 @@ const FetchPlatformCredentialsResponse = Type.Object({
 })
 export type TFetchPlatformCredentialsResponse = Static<typeof FetchPlatformCredentialsResponse>
 
-const UpdateVaultCredentials = Type.Object({
+const UpdateVaultEntry = Type.Object({
     id: Type.String(),
     uid: Type.String(),
     accountUsername: Type.Optional(Type.String()),
     accountPassword: Type.Optional(Type.String()),
 })
-export type TUpdateVaultCredentials = Static<typeof UpdateVaultCredentials>
+export type TUpdateVaultEntry = Static<typeof UpdateVaultEntry>
 
 const UpdateVaultResponse = Type.Object({
     code: Type.Number(),
@@ -191,8 +190,8 @@ const DeleteVaultCredentials = Type.Object({
 })
 export type TDeleteVaultCredentials = Static<typeof DeleteVaultCredentials>
 
-const CommonResponse = Type.Object({
+const Response = Type.Object({
     code: Type.Number(),
     message: Type.Optional(Type.String()),
 })
-export type TCommonResponse = Static<typeof CommonResponse>
+export type TResponse = Static<typeof Response>

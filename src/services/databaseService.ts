@@ -1,15 +1,15 @@
 import { get, push, ref, remove, set, update } from 'firebase/database';
-import { TCommonResponse, TDeleteVaultCredentials, TFetchPasswordResponse, TGetUser, TPasswordCredentials, TSavePlatformCredentials, TUpdateUserDataResponse, TUpdateVaultCredentials, TUpdateVaultResponse, TUserDetails, TUsernameTaken } from '../utils/types';
+import { TDeleteVaultCredentials, TFetchPasswordResponse, TGetUser, TResponse, TUpdateVaultEntry, TUserDetails, TUsernameTaken, TVaultEntry } from '../utils/types';
 import { db } from '../firebase/config';
 import { comparePassword } from '../utils/bcrypt';
-import { ErrorMessage, ResponseMessage } from '../utils/enums';
+import { ResponseMessage } from '../utils/enums';
 import { currentDate } from '../utils/dateUtils';
 
 const path: string = process.env.REACT_APP_FIREBASE_USERS_UPLOAD_PATH!;
 const vaultPath: string = process.env.REACT_APP_FIREBASE_VAULT_PATH!;
 
 export class DatabaseService {
-    updateUserData = async (userDetails: TUserDetails): Promise<TUpdateUserDataResponse> => {
+    createUserData = async (userDetails: TUserDetails): Promise<TResponse> => {
         const { uid, email, username, password } = userDetails;
         const userRef = ref(db, `${path}/${username}`);
 
@@ -24,11 +24,8 @@ export class DatabaseService {
             return {
                 code: 201
             };
-        } catch (error: any) {
-            return {
-                code: 500,
-                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
-            }
+        } catch (error) {
+            throw error
         }
     };
 
@@ -47,11 +44,8 @@ export class DatabaseService {
                 isUsernameTaken: false,
                 code: 200
             }
-        } catch (error: any) {
-            return {
-                code: 500,
-                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
-            }
+        } catch (error) {
+            throw error
         }
     }
 
@@ -75,17 +69,14 @@ export class DatabaseService {
             }
 
             return { code: 400, message: ResponseMessage.USER_DOES_NOT_EXISTS };
-        } catch (error: any) {
-            return {
-                code: 500,
-                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
-            }
+        } catch (error) {
+            throw error;
         }
     }
 
-    savePlatformCredential = async (passwordCredentials: TPasswordCredentials): Promise<TSavePlatformCredentials> => {
+    saveVaultEntry = async (vaultEntry: TVaultEntry): Promise<TResponse> => {
         try {
-            const { uid, platformName, accountUsername, accountPassword } = passwordCredentials
+            const { uid, platformName, accountUsername, accountPassword } = vaultEntry
             const vaultRef = ref(db, `${vaultPath}/${uid}`);
 
             await push(vaultRef, {
@@ -99,15 +90,12 @@ export class DatabaseService {
             return {
                 code: 201
             };
-        } catch (error: any) {
-            return {
-                code: 500,
-                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
-            }
+        } catch (error) {
+            throw error
         }
     }
 
-    fetchPlatformCredentials = async (uid: string): Promise<TFetchPasswordResponse> => {
+    fetchVaultEntries = async (uid: string): Promise<TFetchPasswordResponse> => {
         try {
             const vaultRef = ref(db, `${vaultPath}/${uid}`);
             const result = await get(vaultRef)
@@ -115,17 +103,14 @@ export class DatabaseService {
                 code: 200,
                 data: result.val() ?? []
             }
-        } catch (error: any) {
-            return {
-                code: 500,
-                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
-            }
+        } catch (error) {
+            throw error
         }
     }
 
-    updateVaultEntry = async (updateVaultCredentials: TUpdateVaultCredentials): Promise<TUpdateVaultResponse> => {
+    updateVaultEntry = async (updateVaultEntry: TUpdateVaultEntry): Promise<TResponse> => {
         try {
-            const { id, uid, accountPassword, accountUsername } = updateVaultCredentials
+            const { id, uid, accountPassword, accountUsername } = updateVaultEntry
             const updateVaultObject: Record<string, string> = {};
             if (accountUsername) updateVaultObject.accountUsername = accountUsername;
             if (accountPassword) updateVaultObject.accountPassword = accountPassword;
@@ -137,15 +122,12 @@ export class DatabaseService {
             return {
                 code: 200
             }
-        } catch (error: any) {
-            return {
-                code: 500,
-                message: error.message ?? ErrorMessage.INTERNAL_SERVER_ERROR,
-            }
+        } catch (error) {
+            throw error
         }
     }
 
-    deleteVaultEntry = async (deleteVaultEntry: TDeleteVaultCredentials): Promise<TCommonResponse> => {
+    deleteVaultEntry = async (deleteVaultEntry: TDeleteVaultCredentials): Promise<TResponse> => {
         try {
             const { id, uid } = deleteVaultEntry;
             const vaultRef = ref(db, `${vaultPath}/${uid}/${id}`);
@@ -153,11 +135,8 @@ export class DatabaseService {
             return {
                 code: 200
             }
-        } catch (error: any) {
-            return {
-                code: 500,
-                message: error.message ?? ErrorMessage.INTERNAL_SERVER_ERROR,
-            }
+        } catch (error) {
+            throw error
         }
     }
 }
