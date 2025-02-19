@@ -177,4 +177,35 @@ export class AuthService {
             };
         }
     }
+
+    verifyUserPassword = async (userDetails: TUserDetails): Promise<TAuthenticateUser> => {
+        try {
+            const isPasswordValidated = validatePassword(userDetails?.password, true)
+            if (!isPasswordValidated.status) {
+                return {
+                    code: 406,
+                    type: isPasswordValidated?.type,
+                    message: isPasswordValidated?.message!
+                }
+            }
+            const user: TGetUser = await this.databaseService.getUser(userDetails);
+
+            if (user.code === 200) {
+                return {
+                    code: user?.code,
+                    message: user.message!
+                }
+            }
+
+            return {
+                code: user.code,
+                message: user.message!
+            }
+        } catch (error: any) {
+            return {
+                code: 500,
+                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
+            }
+        }
+    }
 }

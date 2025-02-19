@@ -130,7 +130,7 @@ const StorePasswordModal = ({ id, flag, isOpen, onClose }: TStoreModalProps) => 
         const email: string = cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!).email
         const userDetails: TUserDetails = { email, password };
 
-        const response = await new AuthService().authenticateUser(userDetails)
+        const response = await new AuthService().verifyUserPassword(userDetails)
 
         if (response.code === 200) {
             return true;
@@ -157,7 +157,14 @@ const StorePasswordModal = ({ id, flag, isOpen, onClose }: TStoreModalProps) => 
             <ModalOverlay textAlign='center' backdropFilter="blur(8px)" />
             <ModalContent m={'2'} bgColor={Color.TEAL_800} alignSelf='center' alignItems='center'>
 
-                <ModalHeader mx={'5'} color={Color.RED_500}>Store Password Credentials</ModalHeader>
+                <ModalHeader mx={'5'} color={Color.RED_500}>
+                    {
+                        flag === true ?
+                            'Store Password Credentials'
+                            :
+                            "Update Vault Credentials"
+                    }
+                </ModalHeader>
                 <ModalCloseButton ml={'5px'} bgColor={Color.PURPLE_700} />
                 <ModalBody p={'5'} textAlign={'start'}>
                     <Stack>

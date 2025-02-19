@@ -36,7 +36,7 @@ const CustomModal = ({ isOpen, onClose, title, username, password, modalType }: 
         const email: string = cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!).email
         const userDetails: TUserDetails = { email, password: givenPassword };
 
-        const response = await authService.authenticateUser(userDetails)
+        const response = await authService.verifyUserPassword(userDetails)
 
         if (response.code === 200) {
             setModalTypeValue(ModalType.PASSWORD);

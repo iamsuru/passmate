@@ -7,7 +7,6 @@ const Button = Type.Object({
     isLoading: Type.Optional(Type.Boolean()),
     onClick: Type.Optional(Type.Function([Type.Object({})], Type.Void()))
 })
-
 export type TButton = Static<typeof Button>
 
 const IconIdentifierSchema = Type.Object({
@@ -17,7 +16,6 @@ const IconIdentifierSchema = Type.Object({
     isError: Type.Boolean(),
     onChange: Type.Function([Type.Object({ target: Type.Object({ value: Type.String() }) })], Type.Void())
 });
-
 export type TIconIdentifierProps = Static<typeof IconIdentifierSchema>;
 
 const PasswordField = Type.Object({
@@ -26,7 +24,6 @@ const PasswordField = Type.Object({
     onChange: Type.Optional(Type.Function([Type.Object({ target: Type.Object({ value: Type.String() }) })], Type.Void())),
     fieldText: Type.Optional(Type.String())
 });
-
 export type TPasswordField = Static<typeof PasswordField>;
 
 const CredentialsCard = Type.Object({
@@ -35,9 +32,7 @@ const CredentialsCard = Type.Object({
     accountUsername: Type.String(),
     accountPassword: Type.String(),
 })
-
 export type TCredentialsCard = Static<typeof CredentialsCard>;
-
 
 const CustomModalProps = Type.Object({
     isOpen: Type.Boolean(),
@@ -47,7 +42,6 @@ const CustomModalProps = Type.Object({
     password: Type.String(),
     modalType: Type.String(),
 })
-
 export type TCustomModalProps = Static<typeof CustomModalProps>
 
 const StoreModalProps = Type.Object({
@@ -56,7 +50,6 @@ const StoreModalProps = Type.Object({
     onClose: Type.Function([], Type.Void()),
     flag: Type.Optional(Type.Union([Type.String(), Type.Boolean()])),
 })
-
 export type TStoreModalProps = Static<typeof StoreModalProps>
 
 const UserDetails = Type.Object({
@@ -65,40 +58,35 @@ const UserDetails = Type.Object({
     username: Type.Optional(Type.String()),
     password: Type.String(),
 })
-
 export type TUserDetails = Static<typeof UserDetails>
 
-const createdUser = Type.Object({
+const CreatedUser = Type.Object({
     code: Type.Number(),
     type: Type.Optional(Type.String()),
     message: Type.String()
 })
+export type TCreatedUser = Static<typeof CreatedUser>
 
-export type TCreatedUser = Static<typeof createdUser>
-
-const authenticateUser = Type.Object({
+const AuthenticateUser = Type.Object({
     code: Type.Number(),
     type: Type.Optional(Type.String()),
     message: Type.String(),
     data: Type.Optional(Type.Any())
 })
+export type TAuthenticateUser = Static<typeof AuthenticateUser>
 
-export type TAuthenticateUser = Static<typeof authenticateUser>
-
-const validations = Type.Object({
+const Validations = Type.Object({
     status: Type.Boolean(),
     type: Type.Optional(Type.String()),
     message: Type.Optional(Type.String())
 })
+export type TValidations = Static<typeof Validations>
 
-export type TValidations = Static<typeof validations>
-
-const signOut = Type.Object({
+const SignOut = Type.Object({
     code: Type.Number(),
     message: Type.Optional(Type.String())
 })
-
-export type TSignout = Static<typeof signOut>
+export type TSignout = Static<typeof SignOut>
 
 const VaultEntry = Type.Object({
     uid: Type.String(),
@@ -106,7 +94,6 @@ const VaultEntry = Type.Object({
     accountUsername: Type.String(),
     accountPassword: Type.String(),
 })
-
 export type TVaultEntry = Static<typeof VaultEntry>
 
 // Password Service
@@ -140,18 +127,18 @@ const UpdateUserDataResponse = Type.Object({
 })
 export type TUpdateUserDataResponse = Static<typeof UpdateUserDataResponse>
 
-const usernameTaken = Type.Object({
+const UsernameTaken = Type.Object({
     isUsernameTaken: Type.Boolean(),
     code: Type.Number(),
 })
-export type TUsernameTaken = Static<typeof usernameTaken>
+export type TUsernameTaken = Static<typeof UsernameTaken>
 
-const getUser = Type.Object({
+const GetUser = Type.Object({
     code: Type.Number(),
     message: Type.Optional(Type.String()),
     data: Type.Optional(UserDetails)
 })
-export type TGetUser = Static<typeof getUser>
+export type TGetUser = Static<typeof GetUser>
 
 const SavePlatformCredentials = Type.Object({
     code: Type.Number(),
