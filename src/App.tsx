@@ -19,7 +19,6 @@ function App() {
         <meta property="og:description" content="Store your passwords securely and manage them effortlessly with PassMate." />
         <meta property="og:url" content="https://web-passmate.netlify.app" />
         <meta name="linkedin:creator" content="@iamsuru" />
-        <title>PassMate - Secure Password Manager</title>
       </Helmet>
 
       <NavBar />
