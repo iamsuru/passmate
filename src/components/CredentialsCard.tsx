@@ -1,9 +1,9 @@
-import { Box, Flex, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure, useToast } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay, Box, Button, Flex, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import CustomModal from "./CustomModal";
 import { Color, IdentiferIds, ModalType } from "../utils/enums";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { TCredentialsCard } from "../utils/types";
+import { FocusableElement, TCredentialsCard } from "../utils/types";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import StorePasswordModal from "./StorePasswordModal";
 import { PasswordService } from "../services/passwordService";
@@ -12,6 +12,10 @@ import { eventBus } from "../utils/eventBus";
 
 export const CredentialsCard = ({ id, platformName, accountUsername, accountPassword }: TCredentialsCard) => {
     const toast = useToast();
+
+    //for confirming deletion
+    const { isOpen: alertDialogIsOpen, onOpen: alertDialogOnOpen, onClose: alertDialogOnClose } = useDisclosure()
+    const cancelRef = React.useRef<HTMLButtonElement>(null);
 
     //for password showing
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,9 +43,19 @@ export const CredentialsCard = ({ id, platformName, accountUsername, accountPass
         onOpenStorePasswordModal()
     }
 
-    const handleDeleteVaultCredentials = async (id: string) => {
+    const [credentialToDelete, setCredentialToDelete] = useState<string | null>(null);
+
+    // Function to confirm deletion
+    const confirmDelete = (id: string) => {
+        setCredentialToDelete(id);
+        alertDialogOnOpen();
+    };
+
+    const handleDeleteVaultCredentials = async () => {
+        if (!credentialToDelete) return;
+
         const uid = await new Cookie().getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)?.uid;
-        const deleteObject = { id, uid }
+        const deleteObject = { id: credentialToDelete, uid };
 
         const response = await new PasswordService().deleteVaultCredentials(deleteObject);
 
@@ -53,9 +67,7 @@ export const CredentialsCard = ({ id, platformName, accountUsername, accountPass
                 isClosable: true,
                 position: 'top'
             });
-            eventBus.emit("refresh")
-            //closing the modal
-            onClose();
+            eventBus.emit("refresh");
         } else {
             toast({
                 description: response.message,
@@ -65,8 +77,10 @@ export const CredentialsCard = ({ id, platformName, accountUsername, accountPass
                 position: 'top'
             });
         }
-
-    }
+        // Close the alert and reset ID
+        setCredentialToDelete(null);
+        alertDialogOnClose();
+    };
 
     return (
         <>
@@ -97,7 +111,7 @@ export const CredentialsCard = ({ id, platformName, accountUsername, accountPass
                             <MenuList>
                                 <MenuItem onClick={() => { setIdentifierId(IdentiferIds.ACCOUNT_USERNAME); handleStorePasswordModal() }}>Update username</MenuItem>
                                 <MenuItem onClick={() => { setIdentifierId(IdentiferIds.ACCOUNT_PASSWORD); handleStorePasswordModal() }}>Update password</MenuItem>
-                                <MenuItem onClick={() => { handleDeleteVaultCredentials(id!) }}>Delete credentials</MenuItem>
+                                <MenuItem onClick={() => { confirmDelete(id!) }}>Delete credentials</MenuItem>
                             </MenuList>
                         </Menu>
                     </Flex>
@@ -119,6 +133,29 @@ export const CredentialsCard = ({ id, platformName, accountUsername, accountPass
                 onClose={onCloseStorePasswordModal}
                 flag={identifierId}
             />
+
+            <AlertDialog
+                isOpen={alertDialogIsOpen}
+                leastDestructiveRef={cancelRef as React.RefObject<FocusableElement>}
+                onClose={onClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogBody>
+                            Are you sure you want to delete?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={alertDialogOnClose}>
+                                Cancel
+                            </Button>
+                            <Button colorScheme='red' onClick={handleDeleteVaultCredentials} ml={3}>
+                                Delete
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
         </>
     );
 };

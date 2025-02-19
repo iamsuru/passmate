@@ -151,3 +151,5 @@ const Response = Type.Object({
     message: Type.Optional(Type.String()),
 })
 export type TResponse = Static<typeof Response>
+
+export type FocusableElement = HTMLButtonElement | HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLElement;
