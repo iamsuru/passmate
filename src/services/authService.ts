@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, User } from 'firebase/auth'
-import { TAuthenticateUser, TGetUser, TResponse, TUserDetails, TUsernameTaken } from '../utils/types'
+import { TAuthenticateUser, TResponse, TUserDetails, TUsernameTaken } from '../utils/types'
 import { auth } from '../firebase/config'
 import { ErrorMessage, ResponseMessage } from '../utils/enums'
 import { validateEmail, validatePassword, validateUsername } from '../utils/validations'
