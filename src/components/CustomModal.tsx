@@ -67,7 +67,7 @@ const CustomModal = ({ isOpen, onClose, title, username, password, modalType }: 
             <ModalOverlay textAlign="center" backdropFilter="blur(8px)" />
             <ModalContent m={"2"} bgColor={Color.TEAL_800} alignSelf="center" alignItems="center">
                 <ModalHeader mx={"5"} color={Color.RED_500}>
-                    {modalTypeValue === ModalType.VERIFICATION ? "Verification required" : "Password"}
+                    {modalTypeValue === ModalType.VERIFICATION ? "Verify yourself" : "Password"}
                 </ModalHeader>
                 <ModalCloseButton ml={"5px"} bgColor={Color.PURPLE_700} />
                 <ModalBody p={"5"} textAlign={"start"}>
