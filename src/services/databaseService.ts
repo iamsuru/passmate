@@ -10,15 +10,14 @@ const vaultPath: string = process.env.REACT_APP_FIREBASE_VAULT_PATH!;
 
 export class DatabaseService {
     createUserData = async (userDetails: TUserDetails): Promise<TResponse> => {
-        const { uid, email, username, password } = userDetails;
-        const userRef = ref(db, `${path}/${username}`);
+        const { uid, email, username } = userDetails;
+        const userRef = ref(db, `${path}/${uid}`);
 
         try {
             await set(userRef, {
                 uid,
                 email,
-                username,
-                password,
+                username
             });
 
             return {

@@ -1,8 +1,7 @@
-import { createUserWithEmailAndPassword, deleteUser, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, User } from 'firebase/auth'
+import { createUserWithEmailAndPassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, User } from 'firebase/auth'
 import { TAuthenticateUser, TGetUser, TResponse, TUserDetails, TUsernameTaken } from '../utils/types'
 import { auth } from '../firebase/config'
 import { ErrorMessage, ResponseMessage } from '../utils/enums'
-import { createHashedPassword } from '../utils/bcrypt'
 import { validateEmail, validatePassword, validateUsername } from '../utils/validations'
 import { Cookie } from "../cookies/cookie";
 import { DatabaseService } from './databaseService'
@@ -40,13 +39,10 @@ export class AuthService {
                 }
             }
 
-            const hashedPassword: string = await createHashedPassword(password)
-
-            const newUser = await createUserWithEmailAndPassword(auth, email, hashedPassword)
+            const newUser = await createUserWithEmailAndPassword(auth, email, password)
             const { uid } = newUser.user
 
             userDetails.uid = uid
-            userDetails.password = hashedPassword
 
             const result: TResponse = await this.databaseService.createUserData(userDetails);
 
@@ -105,33 +101,31 @@ export class AuthService {
                 }
             }
 
-            const user: TGetUser = await this.databaseService.getUser(userDetails);
-            if (user.code === 200) {
-                const authUser = await signInWithEmailAndPassword(auth, userDetails.email, user.data?.password!)
-                if (!authUser.user.emailVerified) {
-                    this.emailVerificationLink(authUser.user)
-                    return {
-                        code: 400,
-                        message: ErrorMessage.EMAIL_ADDRESS_IS_NOT_VERIFIED
-                    }
-                } else {
-                    return {
-                        code: 200,
-                        message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
-                        data: {
-                            uid: authUser.user.uid,
-                            email: user.data?.email,
-                            username: user.data?.username,
-                            token: await authUser.user.getIdToken()
-                        }
+            const authUser = await signInWithEmailAndPassword(auth, userDetails.email, userDetails.password)
+            if (!authUser.user.emailVerified) {
+                this.emailVerificationLink(authUser.user)
+                return {
+                    code: 400,
+                    message: ErrorMessage.EMAIL_ADDRESS_IS_NOT_VERIFIED
+                }
+            } else {
+                return {
+                    code: 200,
+                    message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
+                    data: {
+                        uid: authUser.user.uid,
+                        email: authUser.user.email,
+                        token: await authUser.user.getIdToken()
                     }
                 }
             }
-            return {
-                code: user.code,
-                message: user.message!
-            }
         } catch (error: any) {
+            if (error.code === 'auth/invalid-credential') {
+                return {
+                    code: 400,
+                    message: ResponseMessage.INCORRECT_CREDENTIALS
+                };
+            }
             return {
                 code: 500,
                 message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
@@ -188,20 +182,23 @@ export class AuthService {
                     message: isPasswordValidated?.message!
                 }
             }
-            const user: TGetUser = await this.databaseService.getUser(userDetails);
 
-            if (user.code === 200) {
-                return {
-                    code: user?.code,
-                    message: user.message!
-                }
-            }
+            const credential = EmailAuthProvider.credential(userDetails.email, userDetails.password);
+
+            await reauthenticateWithCredential(auth.currentUser!, credential)
 
             return {
-                code: user.code,
-                message: user.message!
+                code: 200,
+                message: ResponseMessage.AUTHENTICATION_SUCCESSFUL
             }
         } catch (error: any) {
+            if (error.code === 'auth/invalid-credential') {
+                return {
+                    code: 400,
+                    message: ResponseMessage.INCORRECT_CREDENTIALS
+                };
+            }
+
             return {
                 code: 500,
                 message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
