@@ -60,13 +60,6 @@ const UserDetails = Type.Object({
 })
 export type TUserDetails = Static<typeof UserDetails>
 
-const CreatedUser = Type.Object({
-    code: Type.Number(),
-    type: Type.Optional(Type.String()),
-    message: Type.String()
-})
-export type TCreatedUser = Static<typeof CreatedUser>
-
 const AuthenticateUser = Type.Object({
     code: Type.Number(),
     type: Type.Optional(Type.String()),
@@ -97,13 +90,6 @@ const VaultEntry = Type.Object({
 export type TVaultEntry = Static<typeof VaultEntry>
 
 // Password Service
-const StorePasswordResponse = Type.Object({
-    code: Type.Number(),
-    type: Type.Optional(Type.String()),
-    message: Type.String()
-})
-export type TStorePasswordResponse = Static<typeof StorePasswordResponse>
-
 const CredentialSchema = Type.Object({
     accountPassword: Type.String(),
     accountUsername: Type.String(),
@@ -121,12 +107,6 @@ const FetchPassword = Type.Object({
 export type TFetchPasswordResponse = Static<typeof FetchPassword>;
 
 // Database service
-const UpdateUserDataResponse = Type.Object({
-    code: Type.Number(),
-    message: Type.Optional(Type.String())
-})
-export type TUpdateUserDataResponse = Static<typeof UpdateUserDataResponse>
-
 const UsernameTaken = Type.Object({
     isUsernameTaken: Type.Boolean(),
     code: Type.Number(),
@@ -139,12 +119,6 @@ const GetUser = Type.Object({
     data: Type.Optional(UserDetails)
 })
 export type TGetUser = Static<typeof GetUser>
-
-const SavePlatformCredentials = Type.Object({
-    code: Type.Number(),
-    message: Type.Optional(Type.String()),
-})
-export type TSavePlatformCredentials = Static<typeof SavePlatformCredentials>
 
 const FetchPlatformCredentials = Type.Object({
     platformName: Type.String(),
@@ -164,12 +138,6 @@ const UpdateVaultEntry = Type.Object({
     accountPassword: Type.Optional(Type.String()),
 })
 export type TUpdateVaultEntry = Static<typeof UpdateVaultEntry>
-
-const UpdateVaultResponse = Type.Object({
-    code: Type.Number(),
-    message: Type.Optional(Type.String()),
-})
-export type TUpdateVaultResponse = Static<typeof UpdateVaultResponse>
 
 const DeleteVaultCredentials = Type.Object({
     id: Type.String(),
