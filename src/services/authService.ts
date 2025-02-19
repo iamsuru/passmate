@@ -1,165 +1,211 @@
 import { createUserWithEmailAndPassword, deleteUser, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, User } from 'firebase/auth'
-import { TAuthenticateUser, TCreatedUser, TSignout, TUpdateUserDetailsResponse, TUserDetails } from '../utils/types'
+import { TAuthenticateUser, TGetUser, TResponse, TUserDetails, TUsernameTaken } from '../utils/types'
 import { auth } from '../firebase/config'
-import { getUser, isUsernameTaken, updateUserData } from './databaseService'
-import { ErrorMessages, ResponseMessage } from '../utils/enums'
+import { ErrorMessage, ResponseMessage } from '../utils/enums'
 import { createHashedPassword } from '../utils/bcrypt'
 import { validateEmail, validatePassword, validateUsername } from '../utils/validations'
 import { Cookie } from "../cookies/cookie";
+import { DatabaseService } from './databaseService'
 
-const cookie = new Cookie();
+export class AuthService {
+    private databaseService: DatabaseService;
+    private cookie: Cookie;
 
-export const registerUser = async (userDetails: TUserDetails): Promise<TCreatedUser> => {
-    try {
-        const { email, username, password } = userDetails
+    constructor() {
+        this.databaseService = new DatabaseService()
+        this.cookie = new Cookie();
+    }
 
-        const isEmailValidated = validateEmail(email)
-        const isUsernameValidated = validateUsername(username!)
-        const isPasswordValidated = validatePassword(password, false)
+    registerUser = async (userDetails: TUserDetails): Promise<TResponse> => {
+        try {
+            const { email, username, password } = userDetails
 
-        if (!isEmailValidated.status || !isUsernameValidated.status || !isPasswordValidated.status) {
-            return {
-                code: 406,
-                type: isEmailValidated?.type! || isUsernameValidated.type! || isPasswordValidated?.type!,
-                message: isEmailValidated?.message! || isUsernameValidated.message! || isPasswordValidated?.message!
-            }
-        }
+            const isEmailValidated = validateEmail(email)
+            const isUsernameValidated = validateUsername(username!)
+            const isPasswordValidated = validatePassword(password, false)
 
-        const usernameTaken = await isUsernameTaken(userDetails?.username!)
-        if (usernameTaken.isUsernameTaken === true) {
-            return {
-                code: 400,
-                message: ResponseMessage.USERNAME_NOT_AVAILABLE
-            }
-        }
-
-        const hashedPassword: string = await createHashedPassword(password)
-
-        const newUser = await createUserWithEmailAndPassword(auth, email, hashedPassword)
-        const { uid } = newUser.user
-
-        userDetails.uid = uid
-        userDetails.password = hashedPassword
-
-        const result: TUpdateUserDetailsResponse = await updateUserData(userDetails);
-
-        if (result.code === 201) {
-            const isVerificationEmailSent = await emailVerificationLink(newUser.user)
-            if (isVerificationEmailSent) {
+            if (!isEmailValidated.status || !isUsernameValidated.status || !isPasswordValidated.status) {
                 return {
-                    code: result.code,
-                    message: ResponseMessage.EMAIL_VERIFICATION_SENT_SUCCESSFULLY
+                    code: 406,
+                    type: isEmailValidated?.type! || isUsernameValidated.type! || isPasswordValidated?.type!,
+                    message: isEmailValidated?.message! || isUsernameValidated.message! || isPasswordValidated?.message!
                 }
             }
-        }
 
-        await deleteUser(newUser.user);
-        return {
-            code: 400,
-            message: ResponseMessage.FAILED_TO_CREATE_USER_ACCOUNT
-        }
-
-    } catch (error: any) {
-        return {
-            code: 500,
-            message: error.message || ResponseMessage.INTERNAL_SERVER_ERROR
-        }
-    }
-}
-
-const emailVerificationLink = async (user: User) => {
-    try {
-        await sendEmailVerification(user)
-        return true
-    } catch (error: any) {
-        return {
-            code: 500,
-            message: error.message || ResponseMessage.INTERNAL_SERVER_ERROR
-        }
-    }
-}
-
-export const authenticateUser = async (userDetails: TUserDetails): Promise<TAuthenticateUser> => {
-    try {
-        const isEmailValidated = validateEmail(userDetails?.email)
-        const isPasswordValidated = validatePassword(userDetails?.password, true)
-
-        if (!isEmailValidated.status || !isPasswordValidated.status) {
-            return {
-                code: 406,
-                type: isEmailValidated?.type || isPasswordValidated?.type,
-                message: isEmailValidated?.message! || isPasswordValidated?.message!
-            }
-        }
-
-        const user = await getUser(userDetails);
-        if (user.code === 200) {
-            const authUser = await signInWithEmailAndPassword(auth, userDetails.email, user.data?.password!)
-            if (!authUser.user.emailVerified) {
-                emailVerificationLink(authUser.user)
+            const usernameTaken: TUsernameTaken = await this.databaseService.isUsernameTaken(userDetails?.username!)
+            if (usernameTaken.isUsernameTaken === true) {
                 return {
                     code: 400,
-                    message: ResponseMessage.EMAIL_ADDRESS_IS_NOT_VERIFIED
+                    message: ResponseMessage.USERNAME_NOT_AVAILABLE
                 }
-            } else {
-                return {
-                    code: 200,
-                    message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
-                    data: {
-                        email: user.data?.email,
-                        username: user.data?.username,
-                        token: await authUser.user.getIdToken()
+            }
+
+            const hashedPassword: string = await createHashedPassword(password)
+
+            const newUser = await createUserWithEmailAndPassword(auth, email, hashedPassword)
+            const { uid } = newUser.user
+
+            userDetails.uid = uid
+            userDetails.password = hashedPassword
+
+            const result: TResponse = await this.databaseService.createUserData(userDetails);
+
+            if (result.code === 201) {
+                const isVerificationEmailSent = await this.emailVerificationLink(newUser.user)
+                if (isVerificationEmailSent) {
+                    return {
+                        code: result.code,
+                        message: ResponseMessage.EMAIL_VERIFICATION_SENT_SUCCESSFULLY
                     }
                 }
             }
-        }
-        return {
-            code: user.code,
-            message: user.message!
-        }
-    } catch (error: any) {
-        return {
-            code: 500,
-            message: error.message || ResponseMessage.INTERNAL_SERVER_ERROR
-        }
-    }
-}
 
-export const forgotPasswordLink = async (email: string) => {
-    try {
-        const isEmailValidated = validateEmail(email)
-        if (!isEmailValidated.status) {
+            await deleteUser(newUser.user);
             return {
-                code: 406,
-                type: isEmailValidated?.type,
-                message: isEmailValidated?.message!
+                code: 400,
+                message: ErrorMessage.FAILED_TO_CREATE_USER_ACCOUNT
+            }
+
+        } catch (error: any) {
+            if (error.code === 'auth/email-already-in-use') {
+                return {
+                    code: 400,
+                    message: ResponseMessage.EMAIL_ID_ALREADY_IN_USE
+                };
+            }
+            return {
+                code: 500,
+                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
             }
         }
+    }
 
-        await sendPasswordResetEmail(auth, email)
-
-        return {
-            code: 200,
-            message: ResponseMessage.PASSWORD_RESET_LINK_SENT_SUCCESSFULLY
+    private emailVerificationLink = async (user: User): Promise<boolean | TResponse> => {
+        try {
+            await sendEmailVerification(user)
+            return true
+        } catch (error: any) {
+            return {
+                code: 500,
+                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
+            }
         }
+    }
 
-    } catch (error: any) {
-        return {
-            code: 500,
-            message: error.message || ResponseMessage.INTERNAL_SERVER_ERROR
+    authenticateUser = async (userDetails: TUserDetails): Promise<TAuthenticateUser> => {
+        try {
+            const isEmailValidated = validateEmail(userDetails?.email)
+            const isPasswordValidated = validatePassword(userDetails?.password, true)
+
+            if (!isEmailValidated.status || !isPasswordValidated.status) {
+                return {
+                    code: 406,
+                    type: isEmailValidated?.type || isPasswordValidated?.type,
+                    message: isEmailValidated?.message! || isPasswordValidated?.message!
+                }
+            }
+
+            const user: TGetUser = await this.databaseService.getUser(userDetails);
+            if (user.code === 200) {
+                const authUser = await signInWithEmailAndPassword(auth, userDetails.email, user.data?.password!)
+                if (!authUser.user.emailVerified) {
+                    this.emailVerificationLink(authUser.user)
+                    return {
+                        code: 400,
+                        message: ErrorMessage.EMAIL_ADDRESS_IS_NOT_VERIFIED
+                    }
+                } else {
+                    return {
+                        code: 200,
+                        message: ResponseMessage.AUTHENTICATION_SUCCESSFUL,
+                        data: {
+                            uid: authUser.user.uid,
+                            email: user.data?.email,
+                            username: user.data?.username,
+                            token: await authUser.user.getIdToken()
+                        }
+                    }
+                }
+            }
+            return {
+                code: user.code,
+                message: user.message!
+            }
+        } catch (error: any) {
+            return {
+                code: 500,
+                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
+            }
+        }
+    }
+
+    forgotPasswordLink = async (email: string): Promise<TResponse> => {
+        try {
+            const isEmailValidated = validateEmail(email)
+            if (!isEmailValidated.status) {
+                return {
+                    code: 406,
+                    type: isEmailValidated?.type,
+                    message: isEmailValidated?.message!
+                }
+            }
+
+            await sendPasswordResetEmail(auth, email)
+
+            return {
+                code: 200,
+                message: ResponseMessage.PASSWORD_RESET_LINK_SENT_SUCCESSFULLY
+            }
+
+        } catch (error: any) {
+            return {
+                code: 500,
+                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
+            }
+        }
+    }
+
+    signOut = async (key: string): Promise<TResponse> => {
+        try {
+            await auth.signOut();
+            this.cookie.clearCookie(key);
+            return { code: 200 };
+        } catch (error: any) {
+            return {
+                code: 500,
+                message: error.message ?? ErrorMessage.ERROR_OCCURRED_WHILE_SIGN_OUT,
+            };
+        }
+    }
+
+    verifyUserPassword = async (userDetails: TUserDetails): Promise<TAuthenticateUser> => {
+        try {
+            const isPasswordValidated = validatePassword(userDetails?.password, true)
+            if (!isPasswordValidated.status) {
+                return {
+                    code: 406,
+                    type: isPasswordValidated?.type,
+                    message: isPasswordValidated?.message!
+                }
+            }
+            const user: TGetUser = await this.databaseService.getUser(userDetails);
+
+            if (user.code === 200) {
+                return {
+                    code: user?.code,
+                    message: user.message!
+                }
+            }
+
+            return {
+                code: user.code,
+                message: user.message!
+            }
+        } catch (error: any) {
+            return {
+                code: 500,
+                message: error.message || ErrorMessage.INTERNAL_SERVER_ERROR
+            }
         }
     }
 }
-
-export const signOut = async (key: string): Promise<TSignout> => {
-    try {
-        await auth.signOut();
-        cookie.clearCookie(key);
-        return { code: 200 };
-    } catch (error: any) {
-        return {
-            code: 500,
-            message: error.message ?? ErrorMessages.ERROR_OCCURRED_WHILE_SIGN_OUT,
-        };
-    }
-};

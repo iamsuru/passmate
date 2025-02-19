@@ -1,15 +1,27 @@
+export enum RoutesUrl {
+    HOME_PAGE = '/',
+    HOME_SCREEN = '/home-screen',
+    FORGOT_PASSWORD = '/forgot-password',
+}
+
 export enum ButtonName {
     LOGIN_BUTTON = 'Login',
     SIGN_UP_BUTTON = 'Sign up',
     GOOGLE_SSO_BUTTON = 'Continue with Google',
     VERIFY_BUTTON = 'Verify',
-    PASSWORD_RESET_LINK = 'Send Reset Password Link'
+    PASSWORD_RESET_LINK = 'Send Reset Password Link',
+    SAVE_PASSWORD = 'Save Password',
+    UPDATE = 'Verify & Update'
 }
 
 export enum PlaceHolder {
     EMAIL = 'Email',
     USERNAME = 'Username',
-    EMAIL_OR_USERNAME = 'Email or Username'
+    EMAIL_OR_USERNAME = 'Email or Username',
+    PLATFORM_NAME = 'Platform name',
+    ACCOUNT_USERNAME = 'Account username',
+    ACCOUNT_PASSWORD = 'Account password',
+    PASSWORD_FIELD_TEXT = 'Passmate password',
 }
 
 export enum TabName {
@@ -22,12 +34,14 @@ export enum Variant {
     OUTLINE = 'outline',
     TRANSPARENT = 'transparent',
     UNSTYLED = 'unstyled',
-    SUBTLE = 'subtle'
+    SUBTLE = 'subtle',
+    GHOST = 'ghost'
 }
 
 export enum ModalType {
     VERIFICATION = 'verification',
-    PASSWORD = 'password'
+    PASSWORD = 'password',
+    VAULT_ENTRY = 'vault-entry',
 }
 
 export enum Color {
@@ -45,39 +59,59 @@ export enum Color {
 
 export enum ResponseMessage {
     EMAIL_VERIFICATION_SENT_SUCCESSFULLY = 'Email verification link sent',
-    FAILED_TO_CREATE_USER_ACCOUNT = 'Failed to create user account',
-    USERNAME_NOT_AVAILABLE = 'Username not available',
-    INTERNAL_SERVER_ERROR = 'Internal server error',
     INCORRECT_CREDENTIALS = 'Incorrect Credentials',
+    USERNAME_NOT_AVAILABLE = 'Username not available',
     USER_DOES_NOT_EXISTS = 'User does not exists with these credentials',
     AUTHENTICATION_SUCCESSFUL = 'Authentication successful',
-    EMAIL_IS_NOT_PROVIDED = 'Email id is not provided',
-    USERNAME_IS_NOT_PROVIDED = 'Username is not provided',
-    PASSWORD_IS_NOT_PROVIDED = 'Password is not provided',
-    PASSWORD_LENGTH_VALIDATION_FAILED = 'Password must be 8-20 characters long',
-    PASSWORD_IS_NOT_STRONG = 'Password is not strong. Please create a strong password',
     SOME_INPUT_FIELDS_ARE_NOT_PROVIDED = 'Some input fields are not provided',
-    INVALID_EMAIL_IS_NOT_PROVIDED = 'Invalid email id provided',
     PASSWORD_RESET_LINK_SENT_SUCCESSFULLY = 'Password reset link sent successfully',
-    EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified',
-    SESSION_HAS_EXPIRED = 'Your session has expired. Please log in again to continue'
+    SESSION_HAS_EXPIRED = 'Your session has expired. Please log in again to continue',
+    PASSWORD_STORED_SUCCESSFULLY = 'Password stored successfully in vault',
+    VAULT_ENTRY_UPDATED_SUCCESSFULLY = 'Vault entry updated successfully',
+    VAULT_ENTRY_DELETED_SUCCESSFULLY = 'Vault entry deleted successfully',
+    EMAIL_ID_ALREADY_IN_USE = 'Email id already in use',
+    VAULT_IS_EMPTY = 'Nothing stored in passmate'
 }
 
-export enum ErrorMessages {
-    ERROR_OCCURRED_WHILE_SIGN_OUT = "Error occurred while signing out"
+export enum ErrorMessage {
+    FAILED_TO_CREATE_USER_ACCOUNT = 'Failed to create user account',
+    EMAIL_ID_NOT_PROVIDED = 'Email id is not provided',
+    USERNAME_IS_NOT_PROVIDED = 'Username is not provided',
+    PASSWORD_IS_NOT_PROVIDED = 'Password is not provided',
+    INTERNAL_SERVER_ERROR = 'Internal server error',
+    ACCOUNT_USERNAME_NOT_PROVIDED = 'Account username not provided',
+    ACCOUNT_PASSWORD_NOT_PROVIDED = 'Account password not provided',
+    ERROR_OCCURRED_WHILE_SIGN_OUT = "Error occurred while signing out",
+    PASSWORD_LENGTH_VALIDATION_FAILED = 'Password must be 8-20 characters long',
+    PASSWORD_IS_NOT_STRONG = 'Password is not strong. Please create a strong password',
+    INVALID_EMAIL_ID_NOT_PROVIDED = 'Invalid email id provided',
+    EMAIL_ADDRESS_IS_NOT_VERIFIED = 'Email address is not verified',
+    PLATFORM_NAME_NOT_PROVIDED = 'Platform name is not provided',
+    FAILED_TO_FETCH_VAULT_ENTRIES = 'Failed to fetch vault entries',
+    FAILED_TO_CREATE_VAULT_ENTRY = 'Failed to create vault entry',
+    FAILED_TO_UPDATE_VAULT_ENTRY = 'Failed to update vault credentials',
+    FAILED_TO_DELETE_VAULT_ENTRY = 'Failed to delete vault credentials',
+    FIELD_CAN_NOT_BE_EMPTY = 'Field can not be empty',
 }
 
 export enum ValidateInputType {
     EMAIL = 'email',
     USERNAME = 'username',
     PASSWORD = 'password',
+    PLATFORM_NAME = 'platform-name',
+    ACCOUNT_USERNAME = 'account-username',
+    ACCOUNT_PASSWORD = 'account-password',
 }
 
 export enum IdentiferIds {
-    EMAILLOGIN = 'emailLogin',
-    PASSWORDLOGIN = 'passwordLogin',
-    EMAILREGISTRATION = 'emailRegistration',
-    USERNAMEREGISTRATION = 'usernameRegistration',
-    PASSWORDREGISTRATION = 'passwordRegistration',
-    EMAILFORGOTPASSWORD = 'emailForgotPassword'
+    LOGIN_EMAIL = 'login-email',
+    LOGIN_PASSWORD = 'login-password',
+    REGISTRATION_EMAIL = 'registration-email',
+    REGISTRATION_USERNAME = 'registration-username',
+    REGISTRATION_PASSWORD = 'registration-password',
+    FORGOT_PASSWORD_EMAIL = 'forgot-password-email',
+    PLATFORM_NAME = 'platform-name',
+    ACCOUNT_USERNAME = 'account-username',
+    ACCOUNT_PASSWORD = 'account-password',
+    VALIDATE_PASSWORD = 'validate-password'
 }
