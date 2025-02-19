@@ -1,6 +1,6 @@
 import { Box, Button, Heading, Menu, MenuButton, MenuList, MenuItem, useToast, useDisclosure } from "@chakra-ui/react";
 import "../styles/navbar.css";
-import { Color, Variant } from "../utils/enums";
+import { Color, RoutesUrl, Variant } from "../utils/enums";
 import { TbMenu2 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { Cookie } from "../cookies/cookie"
@@ -37,7 +37,7 @@ export const NavBar = () => {
     const handleSignOut = async () => {
         const response: TResponse = await authService.signOut(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)
         if (response.code === 200) {
-            navigate('/')
+            navigate(RoutesUrl.HOME_PAGE)
         } else {
             toast({
                 description: response.message,

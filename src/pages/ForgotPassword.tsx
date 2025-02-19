@@ -1,7 +1,7 @@
 import { Box, FormControl, Stack, useToast } from "@chakra-ui/react";
 import { CustomButton } from "../components/Button";
 import { Identifier } from "../components/Identifier";
-import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums";
+import { ButtonName, Color, IdentiferIds, PlaceHolder, RoutesUrl, Variant } from "../utils/enums";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
@@ -30,7 +30,7 @@ export const ForgotPasswordPage = () => {
                 isClosable: true,
                 position: 'top'
             })
-            navigate('/');
+            navigate(RoutesUrl.HOME_PAGE);
         } else {
             const newErrors: { [key: string]: boolean } = {};
             if (response?.code === 406) {

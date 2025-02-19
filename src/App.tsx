@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import "./styles/app.css";
 import { ForgotPasswordPage } from "./pages/ForgotPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { RoutesUrl } from "./utils/enums";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route
-          path="/"
+          path={RoutesUrl.HOME_PAGE}
           element={
             <ProtectedRoute>
               <HomePage />
@@ -32,7 +33,7 @@ function App() {
           }
         />
         <Route
-          path="/home-screen"
+          path={RoutesUrl.HOME_SCREEN}
           element={
             <ProtectedRoute>
               <HomeScreen />
@@ -40,7 +41,7 @@ function App() {
           }
         />
         <Route
-          path="/forgot-password"
+          path={RoutesUrl.FORGOT_PASSWORD}
           element={
             <ProtectedRoute>
               <ForgotPasswordPage />

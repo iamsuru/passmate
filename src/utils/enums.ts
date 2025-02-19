@@ -1,3 +1,9 @@
+export enum RoutesUrl {
+    HOME_PAGE = '/',
+    HOME_SCREEN = '/home-screen',
+    FORGOT_PASSWORD = '/forgot-password',
+}
+
 export enum ButtonName {
     LOGIN_BUTTON = 'Login',
     SIGN_UP_BUTTON = 'Sign up',

@@ -2,7 +2,7 @@ import { Box, FormControl, Stack, useToast } from "@chakra-ui/react";
 import { CustomButton } from "../components/Button";
 import { Password } from "../components/Password";
 import { Identifier } from "../components/Identifier";
-import { ButtonName, Color, IdentiferIds, PlaceHolder, Variant } from "../utils/enums";
+import { ButtonName, Color, IdentiferIds, PlaceHolder, RoutesUrl, Variant } from "../utils/enums";
 import { useState } from "react";
 import { TAuthenticateUser, TUserDetails } from "../utils/types";
 import { Link, useNavigate } from "react-router-dom";
@@ -38,7 +38,7 @@ export const LoginPage = () => {
             });
 
             cookie.setCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!, response.data)
-            navigate('/home-screen');
+            navigate(RoutesUrl.HOME_SCREEN);
         } else {
             const newErrors: { [key: string]: boolean } = {};
             if (response?.code === 406) {
@@ -65,7 +65,7 @@ export const LoginPage = () => {
                 <CustomButton buttonName={ButtonName.LOGIN_BUTTON} bgColor={Color.TEAL_800} variant={Variant.SOLID} onClick={handleLogin} isLoading={isLoading} />
                 {/* <GoogleSSOBtn buttonName={ButtonName.GOOGLE_SSO_BUTTON} bgColor={Color.TEAL_800} variant={Variant.OUTLINE} onClick={handleSSOLogin} isLoading={isLoading} /> */}
                 <Box textAlign='right' color={Color.GRAY_300}>
-                    <Link to='/forgot-password'>Forgot Password?</Link>
+                    <Link to={RoutesUrl.FORGOT_PASSWORD}>Forgot Password?</Link>
                 </Box>
             </Stack>
         </FormControl>
