@@ -55,7 +55,6 @@ export type TStoreModalProps = Static<typeof StoreModalProps>
 const UserDetails = Type.Object({
     uid: Type.Optional(Type.String()),
     email: Type.String(),
-    username: Type.Optional(Type.String()),
     password: Type.String(),
 })
 export type TUserDetails = Static<typeof UserDetails>
@@ -107,19 +106,6 @@ const FetchPassword = Type.Object({
 export type TFetchPasswordResponse = Static<typeof FetchPassword>;
 
 // Database service
-const UsernameTaken = Type.Object({
-    isUsernameTaken: Type.Boolean(),
-    code: Type.Number(),
-})
-export type TUsernameTaken = Static<typeof UsernameTaken>
-
-const GetUser = Type.Object({
-    code: Type.Number(),
-    message: Type.Optional(Type.String()),
-    data: Type.Optional(UserDetails)
-})
-export type TGetUser = Static<typeof GetUser>
-
 const FetchPlatformCredentials = Type.Object({
     platformName: Type.String(),
     accountUsername: Type.String(),

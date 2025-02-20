@@ -16,8 +16,6 @@ export enum ButtonName {
 
 export enum PlaceHolder {
     EMAIL = 'Email',
-    USERNAME = 'Username',
-    EMAIL_OR_USERNAME = 'Email or Username',
     PLATFORM_NAME = 'Platform name',
     ACCOUNT_USERNAME = 'Account username',
     ACCOUNT_PASSWORD = 'Account password',
@@ -60,10 +58,7 @@ export enum Color {
 export enum ResponseMessage {
     EMAIL_VERIFICATION_SENT_SUCCESSFULLY = 'Email verification link sent',
     INCORRECT_CREDENTIALS = 'Incorrect Credentials',
-    USERNAME_NOT_AVAILABLE = 'Username not available',
-    USER_DOES_NOT_EXISTS = 'User does not exists with these credentials',
     AUTHENTICATION_SUCCESSFUL = 'Authentication successful',
-    SOME_INPUT_FIELDS_ARE_NOT_PROVIDED = 'Some input fields are not provided',
     PASSWORD_RESET_LINK_SENT_SUCCESSFULLY = 'Password reset link sent successfully',
     SESSION_HAS_EXPIRED = 'Your session has expired. Please log in again to continue',
     PASSWORD_STORED_SUCCESSFULLY = 'Password stored successfully in vault',
@@ -74,9 +69,7 @@ export enum ResponseMessage {
 }
 
 export enum ErrorMessage {
-    FAILED_TO_CREATE_USER_ACCOUNT = 'Failed to create user account',
     EMAIL_ID_NOT_PROVIDED = 'Email id is not provided',
-    USERNAME_IS_NOT_PROVIDED = 'Username is not provided',
     PASSWORD_IS_NOT_PROVIDED = 'Password is not provided',
     INTERNAL_SERVER_ERROR = 'Internal server error',
     ACCOUNT_USERNAME_NOT_PROVIDED = 'Account username not provided',
@@ -96,7 +89,6 @@ export enum ErrorMessage {
 
 export enum ValidateInputType {
     EMAIL = 'email',
-    USERNAME = 'username',
     PASSWORD = 'password',
     PLATFORM_NAME = 'platform-name',
     ACCOUNT_USERNAME = 'account-username',
@@ -107,7 +99,6 @@ export enum IdentiferIds {
     LOGIN_EMAIL = 'login-email',
     LOGIN_PASSWORD = 'login-password',
     REGISTRATION_EMAIL = 'registration-email',
-    REGISTRATION_USERNAME = 'registration-username',
     REGISTRATION_PASSWORD = 'registration-password',
     FORGOT_PASSWORD_EMAIL = 'forgot-password-email',
     PLATFORM_NAME = 'platform-name',

@@ -23,18 +23,6 @@ export const validateEmail = (email: string): TValidations => {
     return { status: true }
 }
 
-export const validateUsername = (username: string): TValidations => {
-    username = username.trim()
-    if (!username || username.length === 0) {
-        return {
-            status: false,
-            type: ValidateInputType.USERNAME,
-            message: ErrorMessage.USERNAME_IS_NOT_PROVIDED
-        }
-    }
-    return { status: true };
-}
-
 export const validatePassword = (password: string, isLogin?: boolean): TValidations => {
     password = password.trim()
     if (!password || password.length === 0) {
