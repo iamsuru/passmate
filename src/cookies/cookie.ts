@@ -2,11 +2,18 @@ import Cookies from "js-cookie";
 const hours: number = Number(process.env.REACT_APP_COOKIE_HOURS)
 
 export class Cookie {
-    setCookie = (key: string, value: object) => {
-        const expirationDate = new Date();
-        expirationDate.setTime(expirationDate.getTime() + hours * 60 * 60 * 1000);
+    setCookie = (key: string, value: object, infinite?: boolean) => {
+        let expires;
+
+        if (infinite) {
+            expires = 365 * 100; // 100 years
+        } else {
+            const expirationDate = new Date();
+            expirationDate.setTime(expirationDate.getTime() + hours * 60 * 60 * 1000);
+            expires = expirationDate;
+        }
         Cookies.set(key, JSON.stringify(value), {
-            expires: expirationDate,
+            expires: expires,
             secure: true,
             sameSite: "Strict"
         })

@@ -7,6 +7,7 @@ import "./styles/app.css";
 import { ForgotPasswordPage } from "./pages/ForgotPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { RoutesUrl } from "./utils/enums";
+import { CreatePassmatePassword } from "./pages/CreatePassmatePassword";
 
 function App() {
   return (
@@ -44,6 +45,13 @@ function App() {
           element={
             <ProtectedRoute>
               <ForgotPasswordPage />
+            </ProtectedRoute>}
+        />
+        <Route
+          path={RoutesUrl.CREATE_PASSMATE_PASSWORD}
+          element={
+            <ProtectedRoute>
+              <CreatePassmatePassword />
             </ProtectedRoute>}
         />
       </Routes>

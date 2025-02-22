@@ -2,6 +2,7 @@ export enum RoutesUrl {
     HOME_PAGE = '/',
     HOME_SCREEN = '/home-screen',
     FORGOT_PASSWORD = '/forgot-password',
+    CREATE_PASSMATE_PASSWORD = '/create/passmate-password',
 }
 
 export enum ButtonName {
@@ -11,7 +12,8 @@ export enum ButtonName {
     VERIFY_BUTTON = 'Verify',
     PASSWORD_RESET_LINK = 'Send Reset Password Link',
     SAVE_PASSWORD = 'Save Password',
-    UPDATE = 'Verify & Update'
+    UPDATE = 'Verify & Update',
+    CREATE_PASSWORD = 'Create Passmate Password',
 }
 
 export enum PlaceHolder {
@@ -65,13 +67,16 @@ export enum ResponseMessage {
     VAULT_ENTRY_UPDATED_SUCCESSFULLY = 'Vault entry updated successfully',
     VAULT_ENTRY_DELETED_SUCCESSFULLY = 'Vault entry deleted successfully',
     EMAIL_ID_ALREADY_IN_USE = 'Email id already in use',
-    VAULT_IS_EMPTY = 'Nothing stored in passmate'
+    VAULT_IS_EMPTY = 'Nothing stored in passmate',
+    PASSWORD_CREATED_SUCCESSFULLY = 'Password created successfully',
 }
 
 export enum ErrorMessage {
     EMAIL_ID_NOT_PROVIDED = 'Email id is not provided',
     PASSWORD_IS_NOT_PROVIDED = 'Password is not provided',
     INTERNAL_SERVER_ERROR = 'Internal server error',
+    SSO_LOGIN_FAILED = 'SSO Login failed',
+    PASSMATE_PASSWORD_IS_NOT_CREATED = 'Passmate password is not created',
     ACCOUNT_USERNAME_NOT_PROVIDED = 'Account username not provided',
     ACCOUNT_PASSWORD_NOT_PROVIDED = 'Account password not provided',
     ERROR_OCCURRED_WHILE_SIGN_OUT = "Error occurred while signing out",
