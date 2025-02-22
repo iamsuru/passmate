@@ -64,6 +64,13 @@ export const RegistrationPage = ({ onRegistrationSuccess }: { onRegistrationSucc
         setIsSSOLoading(true);
         const response: TAuthenticateUser = await authService.authenticateUserWithSSO();
         if (response.code === 200) {
+            toast({
+                description: response.message,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+                position: 'top',
+            });
             //setting temporary cookie
             if (!response.data.isNewUser) {
                 cookie.setCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!, response.data);
