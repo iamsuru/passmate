@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Password } from "../components/Password"
 import { ButtonName, Color, IdentiferIds, RoutesUrl, Variant } from "../utils/enums"
 import { CustomButton } from "../components/Button";
-import { Box, useToast } from "@chakra-ui/react";
+import { Box, Input, useToast } from "@chakra-ui/react";
 import { AuthService } from "../services/authService";
 import { TResponse } from "../utils/types";
 import { useNavigate } from "react-router-dom";
@@ -14,8 +14,16 @@ export const CreatePassmatePassword = () => {
     const navigate = useNavigate()
 
     const [password, setPassword] = useState("");
+    const [userEmail, setUserEmail] = useState("")
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: boolean }>({})
+
+    useEffect(() => {
+        const userTempData = cookie.getCookie(process.env.REACT_APP_USER_AUTH_TEMP_SECRET_KEY!);
+        const userEmail = userTempData?.email
+        setUserEmail(userEmail)
+        // eslint-disable-next-line
+    }, [navigate])
 
     const handlePasswordCreation = async () => {
         setIsLoading(true);
@@ -47,10 +55,16 @@ export const CreatePassmatePassword = () => {
                     position: 'top'
                 });
             }
-            setIsLoading(false)
-        } catch (error) {
-
+        } catch (error: any) {
+            toast({
+                description: error.message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+                position: 'top'
+            });
         }
+        setIsLoading(false)
     }
     return (
         <Box
@@ -69,6 +83,7 @@ export const CreatePassmatePassword = () => {
                 maxW="sm"
                 width="full"
             >
+                <Input value={userEmail} isReadOnly bg={Color.GRAY_600} mb='5' />
                 <Password id={IdentiferIds.LOGIN_PASSWORD} onChange={(e) => setPassword(e.target.value)} isError={errors[IdentiferIds.LOGIN_PASSWORD]} />
                 <CustomButton buttonName={ButtonName.CREATE_PASSWORD} bgColor={Color.TEAL_800} variant={Variant.SOLID} onClick={handlePasswordCreation} isLoading={isLoading} />
             </Box>
