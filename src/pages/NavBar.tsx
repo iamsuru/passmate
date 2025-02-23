@@ -31,7 +31,7 @@ export const NavBar = () => {
 
     useEffect(() => {
         //only getting email for now as it is not needed to get all data
-        setUserData(cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!).email)
+        setUserData(cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!)?.email || "")
         // eslint-disable-next-line
     }, [navigate])
 
