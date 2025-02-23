@@ -30,7 +30,8 @@ export const NavBar = () => {
     };
 
     useEffect(() => {
-        setUserData(cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!))
+        //only getting email for now as it is not needed to get all data
+        setUserData(cookie.getCookie(process.env.REACT_APP_USER_AUTH_SECRET_KEY!).email)
         // eslint-disable-next-line
     }, [navigate])
 
@@ -68,7 +69,7 @@ export const NavBar = () => {
                             <TbMenu2 />
                         </MenuButton>
                         <MenuList>
-                            <MenuItem isDisabled>Search vault entries</MenuItem>
+                            <MenuItem isDisabled>User: {userData}</MenuItem>
                             <MenuItem onClick={handleModalClick}>Add vault entry</MenuItem>
                             <MenuItem onClick={handleSignOut}>Logout</MenuItem>
                         </MenuList>
