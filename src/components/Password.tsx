@@ -11,7 +11,7 @@ export const Password = ({ id, onChange, isError, fieldText }: TPasswordField) =
     return (
         <InputGroup mb='10px'>
             {
-                id !== IdentiferIds.VALIDATE_PASSWORD &&
+                (id === IdentiferIds.LOGIN_PASSWORD || id === IdentiferIds.REGISTRATION_PASSWORD) &&
                 <InputLeftElement pointerEvents='none'>
                     <Icon as={TbLockPassword} color={Color.GRAY_300} />
                 </InputLeftElement>

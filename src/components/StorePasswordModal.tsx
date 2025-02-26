@@ -187,9 +187,9 @@ const StorePasswordModal = ({ id, flag, isOpen, onClose }: TStoreModalProps) => 
                         )}
 
                         {(flag === true || flag === IdentiferIds.ACCOUNT_PASSWORD) && (
-                            <Identifier
+                            <Password
                                 id={IdentiferIds.ACCOUNT_PASSWORD}
-                                placeHolder={PlaceHolder.ACCOUNT_PASSWORD}
+                                fieldText={PlaceHolder.ACCOUNT_PASSWORD}
                                 onChange={(e) => setAccountPassword(e.target.value)}
                                 isError={errors[IdentiferIds.ACCOUNT_PASSWORD]}
                             />

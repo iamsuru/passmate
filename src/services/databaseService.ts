@@ -1,9 +1,10 @@
-import { get, push, ref, remove, update } from 'firebase/database';
+import { get, push, ref, remove, set, update } from 'firebase/database';
 import { TDeleteVaultCredentials, TFetchPasswordResponse, TResponse, TUpdateVaultEntry, TVaultEntry } from '../utils/types';
 import { db } from '../firebase/config';
 import { currentDate } from '../utils/dateUtils';
 
 const vaultPath: string = process.env.REACT_APP_FIREBASE_VAULT_PATH!;
+const flagUpdationPath: string = process.env.REACT_APP_FIREBASE_USERS_FLAG_UPDATION_PATH!;
 
 export class DatabaseService {
     saveVaultEntry = async (vaultEntry: TVaultEntry): Promise<TResponse> => {
@@ -71,4 +72,40 @@ export class DatabaseService {
             throw error
         }
     }
+
+    updatePassmatePasswordFlag = async (uid: string, isCreated: boolean): Promise<TResponse> => {
+        try {
+            const flagUpdationRef = ref(db, `${flagUpdationPath}/${uid}`);
+            await set(flagUpdationRef, {
+                isCreated: isCreated
+            })
+            return {
+                code: 200
+            }
+        } catch (error) {
+            throw error
+        }
+    }
+
+    fetchPassmatePasswordFlag = async (uid: string): Promise<TResponse> => {
+        try {
+            const flagUpdationRef = ref(db, `${flagUpdationPath}/${uid}`);
+            const result = await get(flagUpdationRef);
+
+            if (!result.exists()) {
+                return {
+                    code: 404,
+                    message: "No data found"
+                };
+            }
+
+            return {
+                code: 200,
+                message: String(result.val().isCreated)
+            };
+        } catch (error) {
+            throw error;
+        }
+    };
+
 }
